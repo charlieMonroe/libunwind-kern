@@ -28,11 +28,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #define UNW_LOCAL_ONLY
 
-#include <unwind.h>
-#include <stdlib.h>
-#include <libunwind.h>
-
-#include "libunwind_i.h"
+#include "include/unwind.h"
+#include "include/libunwind_i.h"
 
 /* The version of the _Unwind_*() interface implemented by this code.  */
 #define _U_VERSION	1
