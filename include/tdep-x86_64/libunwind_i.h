@@ -31,11 +31,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 /* Target-dependent definitions that are internal to libunwind but need
    to be shared with target-independent code.  */
 
-#include "libunwind.h"
-
-#include "elf64.h"
-#include "mempool.h"
-#include "dwarf.h"
+#include "../libunwind.h"
+#include "../mempool.h"
 
 typedef enum
   {
@@ -62,11 +59,7 @@ struct unw_addr_space
   {
     struct unw_accessors acc;
     unw_caching_policy_t caching_policy;
-#ifdef HAVE_ATOMIC_OPS_H
-    AO_t cache_generation;
-#else
     uint32_t cache_generation;
-#endif
     unw_word_t dyn_generation;		/* see dyn-common.h */
     unw_word_t dyn_info_list_addr;	/* (cached) dyn_info_list_addr */
     struct dwarf_rs_cache global_cache;
