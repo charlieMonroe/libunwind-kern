@@ -25,14 +25,8 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
-#include "libunwind_i.h"
-
 PROTECTED int
 unw_is_fpreg (int regnum)
 {
-#if 0
-  return ((regnum >= UNW_X86_ST0 && regnum <= UNW_X86_ST7)
-	  || (regnum >= UNW_X86_XMM0_lo && regnum <= UNW_X86_XMM7_hi));
-#endif
   return 0;
 }
