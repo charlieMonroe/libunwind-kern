@@ -28,7 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 HIDDEN intrmask_t unwi_full_mask;
 
 static const char rcsid[] UNUSED =
-  "$Id: " PACKAGE_STRING " --- report bugs to " PACKAGE_BUGREPORT " $";
+  "$Id: " "libunwind-kern" " --- report bugs to "  " $";
 
 #if UNW_DEBUG
 
@@ -49,11 +49,6 @@ mi_init (void)
   if (str)
     unwi_debug_level = atoi (str);
 
-  if (unwi_debug_level > 0)
-    {
-      setbuf (stdout, NULL);
-      setbuf (stderr, NULL);
-    }
 #endif
 
   assert (sizeof (struct cursor) <= sizeof (unw_cursor_t));
