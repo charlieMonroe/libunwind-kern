@@ -154,7 +154,7 @@ dwarf_readw (unw_addr_space_t as, unw_accessors_t *a, unw_word_t *addr,
       return ret;
 
     default:
-      abort ();
+      panic ("Unhandled case in dward_readw");
     }
 }
 

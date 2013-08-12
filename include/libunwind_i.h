@@ -47,7 +47,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include <sys/osd.h>
 # include <sys/endian.h>
 
-#include "dwarf_i.h"
 #include "libunwind.h"
 
 #ifdef DEBUG
