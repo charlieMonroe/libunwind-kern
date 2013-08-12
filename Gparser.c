@@ -25,7 +25,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <stddef.h>
 #include "dwarf_i.h"
-#include "libunwind_i.h"
+#include "include/libunwind_i.h"
 
 #define alloc_reg_state()	(mempool_alloc (&dwarf_reg_state_pool))
 #define free_reg_state(rs)	(mempool_free (&dwarf_reg_state_pool, rs))
