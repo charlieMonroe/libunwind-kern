@@ -1,0 +1,187 @@
+mempool.c:109:24: error: too few arguments provided to function-like macro invocation
+  GET_MEMORY (mem, size);
+                       ^
+./include/libunwind_i.h:143:9: note: macro 'GET_MEMORY' defined here
+#define GET_MEMORY(mem, size, type)                                                 \
+        ^
+mempool.c:109:3: error: use of undeclared identifier 'GET_MEMORY'
+  GET_MEMORY (mem, size);
+  ^
+mempool.c:113:28: error: too few arguments provided to function-like macro invocation
+      GET_MEMORY (mem, size);
+                           ^
+./include/libunwind_i.h:143:9: note: macro 'GET_MEMORY' defined here
+#define GET_MEMORY(mem, size, type)                                                 \
+        ^
+mempool.c:113:7: error: use of undeclared identifier 'GET_MEMORY'
+      GET_MEMORY (mem, size);
+      ^
+mempool.c:128:15: error: implicit declaration of function 'getpagesize' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+    pg_size = getpagesize ();
+              ^
+mempool.c:132:25: error: too few arguments provided to function-like macro invocation
+  lock_init (&pool->lock);
+                        ^
+./include/libunwind_i.h:132:9: note: macro 'lock_init' defined here
+#define lock_init(l, name)              mutex_init (l, name)
+        ^
+mempool.c:132:3: error: expression result unused [-Werror,-Wunused-value]
+  lock_init (&pool->lock);
+  ^~~~~~~~~
+mempool.c:156:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
+  lock_acquire (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:134:3: note: expanded from macro 'lock_acquire'
+  mutex_lock (l);
+  ^~~~~~~~~~~~~~
+./include/libunwind_i.h:93:2: note: expanded from macro 'mutex_lock'
+        sx_xlock(l)
+        ^~~~~~~~~~~
+@/sys/sx.h:248:23: note: expanded from macro 'sx_xlock'
+#define sx_xlock(sx)            sx_xlock_((sx), LOCK_FILE, LOCK_LINE)
+                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:212:18: note: expanded from macro 'sx_xlock_'
+        (void)_sx_xlock((sx), 0, (file), (line))
+                        ^~~~
+@/sys/sx.h:102:26: note: passing argument to parameter 'sx' here
+int     _sx_xlock(struct sx *sx, int opts, const char *file, int line);
+                             ^
+mempool.c:167:3: error: member reference base type 'pthread_mutex_t' (aka 'struct pthread_mutex *') is not a structure or union
+  lock_release (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
+  mutex_unlock (l);
+  ^~~~~~~~~~~~~~~~
+./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
+        sx_unlock(l)
+        ^~~~~~~~~~~~
+@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
+#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:269:6: note: expanded from macro 'sx_unlock_'
+        if (sx_xlocked(sx))                                             \
+            ^~~~~~~~~~~~~~
+@/sys/sx.h:265:8: note: expanded from macro 'sx_xlocked'
+        (((sx)->sx_lock & ~(SX_LOCK_FLAGMASK & ~SX_LOCK_SHARED)) ==     \
+          ~~~~^ ~~~~~~~
+mempool.c:167:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
+  lock_release (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
+  mutex_unlock (l);
+  ^~~~~~~~~~~~~~~~
+./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
+        sx_unlock(l)
+        ^~~~~~~~~~~~
+@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
+#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:270:3: note: expanded from macro 'sx_unlock_'
+                sx_xunlock_(sx, file, line);                            \
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:216:14: note: expanded from macro 'sx_xunlock_'
+        _sx_xunlock((sx), (file), (line))
+                    ^~~~
+@/sys/sx.h:104:29: note: passing argument to parameter 'sx' here
+void    _sx_xunlock(struct sx *sx, const char *file, int line);
+                               ^
+mempool.c:167:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
+  lock_release (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
+  mutex_unlock (l);
+  ^~~~~~~~~~~~~~~~
+./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
+        sx_unlock(l)
+        ^~~~~~~~~~~~
+@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
+#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:272:3: note: expanded from macro 'sx_unlock_'
+                sx_sunlock_(sx, file, line);                            \
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:222:14: note: expanded from macro 'sx_sunlock_'
+        _sx_sunlock((sx), (file), (line))
+                    ^~~~
+@/sys/sx.h:103:29: note: passing argument to parameter 'sx' here
+void    _sx_sunlock(struct sx *sx, const char *file, int line);
+                               ^
+mempool.c:174:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
+  lock_acquire (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:134:3: note: expanded from macro 'lock_acquire'
+  mutex_lock (l);
+  ^~~~~~~~~~~~~~
+./include/libunwind_i.h:93:2: note: expanded from macro 'mutex_lock'
+        sx_xlock(l)
+        ^~~~~~~~~~~
+@/sys/sx.h:248:23: note: expanded from macro 'sx_xlock'
+#define sx_xlock(sx)            sx_xlock_((sx), LOCK_FILE, LOCK_LINE)
+                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:212:18: note: expanded from macro 'sx_xlock_'
+        (void)_sx_xlock((sx), 0, (file), (line))
+                        ^~~~
+@/sys/sx.h:102:26: note: passing argument to parameter 'sx' here
+int     _sx_xlock(struct sx *sx, int opts, const char *file, int line);
+                             ^
+mempool.c:178:3: error: member reference base type 'pthread_mutex_t' (aka 'struct pthread_mutex *') is not a structure or union
+  lock_release (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
+  mutex_unlock (l);
+  ^~~~~~~~~~~~~~~~
+./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
+        sx_unlock(l)
+        ^~~~~~~~~~~~
+@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
+#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:269:6: note: expanded from macro 'sx_unlock_'
+        if (sx_xlocked(sx))                                             \
+            ^~~~~~~~~~~~~~
+@/sys/sx.h:265:8: note: expanded from macro 'sx_xlocked'
+        (((sx)->sx_lock & ~(SX_LOCK_FLAGMASK & ~SX_LOCK_SHARED)) ==     \
+          ~~~~^ ~~~~~~~
+mempool.c:178:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
+  lock_release (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
+  mutex_unlock (l);
+  ^~~~~~~~~~~~~~~~
+./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
+        sx_unlock(l)
+        ^~~~~~~~~~~~
+@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
+#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:270:3: note: expanded from macro 'sx_unlock_'
+                sx_xunlock_(sx, file, line);                            \
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:216:14: note: expanded from macro 'sx_xunlock_'
+        _sx_xunlock((sx), (file), (line))
+                    ^~~~
+@/sys/sx.h:104:29: note: passing argument to parameter 'sx' here
+void    _sx_xunlock(struct sx *sx, const char *file, int line);
+                               ^
+mempool.c:178:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
+  lock_release (&pool->lock);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
+  mutex_unlock (l);
+  ^~~~~~~~~~~~~~~~
+./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
+        sx_unlock(l)
+        ^~~~~~~~~~~~
+@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
+#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:272:3: note: expanded from macro 'sx_unlock_'
+                sx_sunlock_(sx, file, line);                            \
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+@/sys/sx.h:222:14: note: expanded from macro 'sx_sunlock_'
+        _sx_sunlock((sx), (file), (line))
+                    ^~~~
+@/sys/sx.h:103:29: note: passing argument to parameter 'sx' here
+void    _sx_sunlock(struct sx *sx, const char *file, int line);
+                               ^
+15 errors generated.

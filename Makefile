@@ -39,7 +39,14 @@ SRCS	= libunwind.c \
 		Lset_reg.c \
 		mempool.c \
 		strerror.c \
-		 malloc_types.c \
-		dwarf_Lstep.c \		global.c \		Lexpr.c \		Lfde.c \		Lfind_proc_info-lsb.c \		Lfind_unwind_table.c \		Lparser.c \		Lpe.c
+		malloc_types.c \
+		dwarf_Lstep.c \
+		global.c \
+		Lexpr.c \
+		Lfde.c \
+		Lfind_proc_info-lsb.c \
+		Lfind_unwind_table.c \
+		Lparser.c \
+		Lpe.c
 
 .include <bsd.kmod.mk>
