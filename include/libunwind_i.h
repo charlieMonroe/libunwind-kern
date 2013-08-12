@@ -185,7 +185,7 @@ do {									\
 static ALWAYS_INLINE int
 print_error (const char *string)
 {
-  return uprintf (string);
+  return uprintf ("%s\n", string);
 }
 
 #define mi_init		UNWI_ARCH_OBJ(mi_init)
@@ -206,24 +206,16 @@ struct elf_dyn_info
     struct elf_image ei;
     unw_dyn_info_t di_cache;
     unw_dyn_info_t di_debug;    /* additional table info for .debug_frame */
-#if UNW_TARGET_IA64
-    unw_dyn_info_t ktab;
-#endif
-#if UNW_TARGET_ARM
-    unw_dyn_info_t di_arm;      /* additional table info for .ARM.exidx */
-#endif
   };
 
 static inline void invalidate_edi (struct elf_dyn_info *edi)
 {
-  if (edi->ei.image)
-    munmap (edi->ei.image, edi->ei.size);
+// TODO
+	/*if (edi->ei.image)
+    munmap (edi->ei.image, edi->ei.size);*/
   memset (edi, 0, sizeof (*edi));
   edi->di_cache.format = -1;
   edi->di_debug.format = -1;
-#if UNW_TARGET_ARM
-  edi->di_arm.format = -1;
-#endif
 }
 
 

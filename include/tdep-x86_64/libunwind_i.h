@@ -31,8 +31,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 /* Target-dependent definitions that are internal to libunwind but need
    to be shared with target-independent code.  */
 
-#include <stdlib.h>
-#include <libunwind.h>
+#include "libunwind.h"
 
 #include "elf64.h"
 #include "mempool.h"
