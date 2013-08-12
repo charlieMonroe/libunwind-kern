@@ -550,7 +550,7 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
 {
   struct dwarf_callback_data cb_data;
   intrmask_t saved_mask;
-  int ret;
+  int ret = 0;
 
   Debug (14, "looking for IP=0x%lx\n", (long) ip);
 
@@ -561,9 +561,11 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
   cb_data.di.format = -1;
   cb_data.di_debug.format = -1;
 
+  /* There is no dl_iterate_phdr in the kernel
   SIGPROCMASK (SIG_SETMASK, &unwi_full_mask, &saved_mask);
   ret = dl_iterate_phdr (dwarf_callback, &cb_data);
   SIGPROCMASK (SIG_SETMASK, &saved_mask, NULL);
+   */
 
   if (ret <= 0)
     {
