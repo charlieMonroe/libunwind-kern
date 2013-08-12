@@ -48,9 +48,6 @@ dwarf_find_unwind_table (struct elf_dyn_info *edi, unw_addr_space_t as,
   unw_proc_info_t pi;
   unw_accessors_t *a;
   Elf_W(Ehdr) *ehdr;
-#if UNW_TARGET_ARM
-  const Elf_W(Phdr) *parm_exidx = NULL;
-#endif
   int i, ret, found = 0;
 
   /* XXX: Much of this code is Linux/LSB-specific.  */
@@ -85,12 +82,6 @@ dwarf_find_unwind_table (struct elf_dyn_info *edi, unw_addr_space_t as,
 	case PT_DYNAMIC:
 	  pdyn = phdr + i;
 	  break;
-
-#if UNW_TARGET_ARM
-	case PT_ARM_EXIDX:
-	  parm_exidx = phdr + i;
-	  break;
-#endif
 
 	default:
 	  break;
@@ -162,7 +153,7 @@ dwarf_find_unwind_table (struct elf_dyn_info *edi, unw_addr_space_t as,
       if (hdr->table_enc != (DW_EH_PE_datarel | DW_EH_PE_sdata4))
 	{
     #if 1
-	  abort ();
+	  panic ("");
     #else
 	  unw_word_t eh_frame_end;
 
@@ -205,18 +196,6 @@ dwarf_find_unwind_table (struct elf_dyn_info *edi, unw_addr_space_t as,
       found = 1;
     }
 
-#if UNW_TARGET_ARM
-  if (parm_exidx)
-    {
-      edi->di_arm.format = UNW_INFO_FORMAT_ARM_EXIDX;
-      edi->di_arm.start_ip = start_ip;
-      edi->di_arm.end_ip = end_ip;
-      edi->di_arm.u.rti.name_ptr = (unw_word_t) path;
-      edi->di_arm.u.rti.table_data = load_base + parm_exidx->p_vaddr;
-      edi->di_arm.u.rti.table_len = parm_exidx->p_memsz;
-      found = 1;
-    }
-#endif
 
 #ifdef CONFIG_DEBUG_FRAME
   /* Try .debug_frame. */
