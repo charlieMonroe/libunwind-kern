@@ -26,8 +26,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "include/dwarf_i.h"
 #include "include/libunwind_i.h"
 
-#include <assert.h>
-
 HIDDEN int
 dwarf_read_encoded_pointer (unw_addr_space_t as, unw_accessors_t *a,
 			    unw_word_t *addr, unsigned char encoding,

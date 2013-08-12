@@ -28,6 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "libunwind.h"
 #include <sys/link_elf.h> /* struct dl_phdr_info */
+#include <sys/sx.h>
 
 struct dwarf_cursor;	/* forward-declaration */
 struct elf_dyn_info;
