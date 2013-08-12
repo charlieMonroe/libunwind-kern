@@ -41,7 +41,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define elf_w(x)	_Uelf64_##x
 #endif
 
-#include "libunwind_i.h"
+#include "include/libunwind_i.h"
 
 extern int elf_w (get_proc_name) (unw_addr_space_t as,
 				  pid_t pid, unw_word_t ip,

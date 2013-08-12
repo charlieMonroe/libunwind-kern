@@ -25,7 +25,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <stdlib.h>
 
-#include "libunwind_i.h"
+#include "include/libunwind_i.h"
 #include "remote.h"
 
 static void

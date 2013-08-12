@@ -25,7 +25,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #if UNW_TARGET_IA64
 
-#include "libunwind_i.h"
+#include "include/libunwind_i.h"
 #include "tdep-ia64/rse.h"
 
 static inline int

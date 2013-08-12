@@ -24,7 +24,7 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
-#include "libunwind_i.h"
+#include "include/libunwind_i.h"
 
 /* From GCC docs: ``Gcc also provides a target specific macro
  * __BIGGEST_ALIGNMENT__, which is the largest alignment ever used for any data
