@@ -31,46 +31,23 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #ifndef libunwind_i_h
 #define libunwind_i_h
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
-
 #include "compiler.h"
-
-#ifdef HAVE___THREAD
-  /* For now, turn off per-thread caching.  It uses up too much TLS
-     memory per thread even when the thread never uses libunwind at
-     all.  */
-# undef HAVE___THREAD
-#endif
 
 /* Platform-independent libunwind-internal declarations.  */
 
 #include <sys/types.h>	/* HP-UX needs this before include of pthread.h */
 
-#include <assert.h>
-#include <libunwind.h>
-#include <pthread.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <elf.h>
+#include <sys/param.h>
+#include <sys/types.h>
+#include <sys/systm.h>
+#include <sys/proc.h>
+#include <sys/lock.h>
+#include <sys/sx.h>
+#include <sys/kernel.h>
+#include <sys/malloc.h>
+#include <sys/osd.h>
 
-#if defined(HAVE_ENDIAN_H)
-# include <endian.h>
-#elif defined(HAVE_SYS_ENDIAN_H)
 # include <sys/endian.h>
-#else
-# define __LITTLE_ENDIAN	1234
-# define __BIG_ENDIAN		4321
-# if defined(__hpux)
-#   define __BYTE_ORDER __BIG_ENDIAN
-# else
-#   error Host has unknown byte-order.
-# endif
-#endif
 
 #ifdef DEBUG
 # define UNW_DEBUG	1
@@ -87,39 +64,14 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #pragma weak pthread_mutex_lock
 #pragma weak pthread_mutex_unlock
 
-#define mutex_init(l)							\
-	(pthread_mutex_init != NULL ? pthread_mutex_init ((l), NULL) : 0)
+#define mutex_init(l, name)							\
+	sx_init_flags(l, name, SX_RECURSE)
 #define mutex_lock(l)							\
-	(pthread_mutex_lock != NULL ? pthread_mutex_lock (l) : 0)
+	sx_xlock(l)
 #define mutex_unlock(l)							\
-	(pthread_mutex_unlock != NULL ? pthread_mutex_unlock (l) : 0)
+	sx_unlock(l)
 
-#ifdef HAVE_ATOMIC_OPS_H
-# include <atomic_ops.h>
-static inline int
-cmpxchg_ptr (void *addr, void *old, void *new)
-{
-  union
-    {
-      void *vp;
-      AO_t *aop;
-    }
-  u;
 
-  u.vp = addr;
-  return AO_compare_and_swap(u.aop, (AO_t) old, (AO_t) new);
-}
-# define fetch_and_add1(_ptr)		AO_fetch_and_add1(_ptr)
-# define fetch_and_add(_ptr, value)	AO_fetch_and_add(_ptr, value)
-   /* GCC 3.2.0 on HP-UX crashes on cmpxchg_ptr() */
-#  if !(defined(__hpux) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
-#   define HAVE_CMPXCHG
-#  endif
-# define HAVE_FETCH_AND_ADD
-#elif defined(HAVE_SYNC_ATOMICS) || defined(HAVE_IA64INTRIN_H)
-# ifdef HAVE_IA64INTRIN_H
-#  include <ia64intrin.h>
-# endif
 static inline int
 cmpxchg_ptr (void *addr, void *old, void *new)
 {
@@ -137,7 +89,6 @@ cmpxchg_ptr (void *addr, void *old, void *new)
 # define fetch_and_add(_ptr, value)	__sync_fetch_and_add(_ptr, value)
 # define HAVE_CMPXCHG
 # define HAVE_FETCH_AND_ADD
-#endif
 #define atomic_read(ptr)	(*(ptr))
 
 #define UNWI_OBJ(fn)	  UNW_PASTE(UNW_PREFIX,UNW_PASTE(I,fn))
@@ -158,39 +109,24 @@ extern intrmask_t unwi_full_mask;
 static inline void mark_as_used(void *v UNUSED) {
 }
 
-#if defined(CONFIG_BLOCK_SIGNALS)
-# define SIGPROCMASK(how, new_mask, old_mask) \
-  sigprocmask((how), (new_mask), (old_mask))
-#else
 # define SIGPROCMASK(how, new_mask, old_mask) mark_as_used(old_mask)
-#endif
 
 #define define_lock(name) \
-  pthread_mutex_t name = PTHREAD_MUTEX_INITIALIZER
-#define lock_init(l)		mutex_init (l)
+  struct sx name;
+#define lock_init(l, name)		mutex_init (l, name)
 #define lock_acquire(l,m)				\
-do {							\
-  SIGPROCMASK (SIG_SETMASK, &unwi_full_mask, &(m));	\
-  mutex_lock (l);					\
-} while (0)
+  mutex_lock (l);
 #define lock_release(l,m)			\
-do {						\
-  mutex_unlock (l);				\
-  SIGPROCMASK (SIG_SETMASK, &(m), NULL);	\
-} while (0)
+  mutex_unlock (l);
 
 #define SOS_MEMORY_SIZE 16384	/* see src/mi/mempool.c */
 
 #ifndef MAP_ANONYMOUS
 # define MAP_ANONYMOUS MAP_ANON
 #endif
-#define GET_MEMORY(mem, size)				    		    \
+#define GET_MEMORY(mem, size, type)				    		    \
 do {									    \
-  /* Hopefully, mmap() goes straight through to a system call stub...  */   \
-  mem = mmap (NULL, size, PROT_READ | PROT_WRITE,			    \
-	      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);			    \
-  if (mem == MAP_FAILED)						    \
-    mem = NULL;								    \
+  mem = malloc(size, type, M_WAITOK)					\
 } while (0)
 
 #define unwi_find_dynamic_proc_info	UNWI_OBJ(find_dynamic_proc_info)
@@ -233,7 +169,6 @@ extern pthread_mutex_t _U_dyn_info_list_lock;
 #define unwi_debug_level		UNWI_ARCH_OBJ(debug_level)
 extern long unwi_debug_level;
 
-# include <stdio.h>
 # define Debug(level,format...)						\
 do {									\
   if (unwi_debug_level >= level)					\
@@ -241,11 +176,11 @@ do {									\
       int _n = level;							\
       if (_n > 16)							\
 	_n = 16;							\
-      fprintf (stderr, "%*c>%s: ", _n, ' ', __FUNCTION__);		\
-      fprintf (stderr, format);						\
+      uprintf ("%*c>%s: ", _n, ' ', __FUNCTION__);		\
+      uprintf (format);						\
     }									\
 } while (0)
-# define Dprintf(format...) 	    fprintf (stderr, format)
+# define Dprintf(format...) 	    printf (format)
 # ifdef __GNUC__
 #  undef inline
 #  define inline	UNUSED
@@ -258,7 +193,7 @@ do {									\
 static ALWAYS_INLINE int
 print_error (const char *string)
 {
-  return write (2, string, strlen (string));
+  return uprintf (string);
 }
 
 #define mi_init		UNWI_ARCH_OBJ(mi_init)
