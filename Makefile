@@ -28,7 +28,6 @@ SRCS	= libunwind.c \
 		init.c \
 		Ldestroy_addr_space.c \
 		Ldyn-extract.c \
-		Ldyn-remote.c \
 		Lfind_dynamic_proc_info.c \
 		Lget_accessors.c \
 		Lget_fpreg.c \
