@@ -24,6 +24,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <sys/stddef.h>
+#include "libunwind-internal.h"
 #include "include/dwarf_i.h"
 #include "include/libunwind_i.h"
 
@@ -528,7 +529,7 @@ get_rs_cache (unw_addr_space_t as, intrmask_t *saved_maskp)
   if (likely (caching == UNW_CACHE_GLOBAL))
     {
       Debug (16, "acquiring lock\n");
-      lock_acquire (&cache->lock, *saved_maskp);
+      lock_acquire (&cache->lock);
     }
 
   if (atomic_read (&as->cache_generation) != atomic_read (&cache->generation))
@@ -548,7 +549,7 @@ put_rs_cache (unw_addr_space_t as, struct dwarf_rs_cache *cache,
 
   Debug (16, "unmasking signals/interrupts and releasing lock\n");
   if (likely (as->caching_policy == UNW_CACHE_GLOBAL))
-    lock_release (&cache->lock, *saved_maskp);
+    lock_release (&cache->lock);
 }
 
 static inline unw_hash_index_t CONST_ATTR
