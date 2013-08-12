@@ -32,6 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "include/dwarf_i.h"
 #include "include/dwarf-eh.h"
 #include "include/libunwind_i.h"
+#include "elf64.h"
 
 struct table_entry
   {
