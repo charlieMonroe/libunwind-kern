@@ -56,18 +56,12 @@ static __thread  int tls_cache_destroyed;
 static void
 trace_cache_free (void *arg)
 {
-  unw_trace_cache_t *cache = arg;
-  if (++cache->dtor_count < PTHREAD_DESTRUCTOR_ITERATIONS)
-  {
-    /* Not yet our turn to get destroyed. Re-install ourselves into the key. */
-    pthread_setspecific(trace_cache_key, cache);
-    Debug(5, "delayed freeing cache %p (%zx to go)\n", cache,
-	  PTHREAD_DESTRUCTOR_ITERATIONS - cache->dtor_count);
-    return;
-  }
+  osd_thread_deregister(trace_cache_key);
+  
   tls_cache_destroyed = 1;
   tls_cache = NULL;
-  munmap (cache->frames, (1u << cache->log_size) * sizeof(unw_tdep_frame_t));
+  // TODO
+  // munmap (cache->frames, (1u << cache->log_size) * sizeof(unw_tdep_frame_t));
   mempool_free (&trace_cache_pool, cache);
   Debug(5, "freed cache %p\n", cache);
 }
@@ -181,7 +175,7 @@ trace_cache_get (void)
   if (likely (trace_cache_once_happen == 0))
   {
     sx_xlock(&trace_init_lock);
-    trace_cache_once();
+    trace_cache_init_once();
     sx_unlock(&trace_init_lock);
 
     if (! (cache = tls_cache))
