@@ -24,13 +24,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "unwind_i.h"
 #include "ucontext_i.h"
-#include <signal.h>
-#include <limits.h>
-
-#pragma weak pthread_once
-#pragma weak pthread_key_create
-#pragma weak pthread_getspecific
-#pragma weak pthread_setspecific
+#include <sys/signal.h>
+#include <sys/limits.h>
+#include <sys/osd.h>
+#include <sys/kernel.h>
 
 /* Initial hash table size. Table expands by 2 bits (times four). */
 #define HASH_MIN_BITS 14
@@ -45,10 +42,12 @@ typedef struct
 } unw_trace_cache_t;
 
 static const unw_tdep_frame_t empty_frame = { 0, UNW_X86_64_FRAME_OTHER, -1, -1, 0, -1, -1 };
+
 static define_lock (trace_init_lock);
-static pthread_once_t trace_cache_once = PTHREAD_ONCE_INIT;
+SX_SYSINIT(trace_init, &trace_init_lock, "trace_init");
+
 static sig_atomic_t trace_cache_once_happen;
-static pthread_key_t trace_cache_key;
+static int trace_cache_key;
 static struct mempool trace_cache_pool;
 static __thread  unw_trace_cache_t *tls_cache;
 static __thread  int tls_cache_destroyed;
@@ -77,7 +76,7 @@ trace_cache_free (void *arg)
 static void
 trace_cache_init_once (void)
 {
-  pthread_key_create (&trace_cache_key, &trace_cache_free);
+  trace_cache_key = osd_thread_register(trace_cache_free);
   mempool_init (&trace_cache_pool, sizeof (unw_trace_cache_t), 0);
   trace_cache_once_happen = 1;
 }
@@ -180,9 +179,8 @@ static unw_trace_cache_t *
 trace_cache_get (void)
 {
   unw_trace_cache_t *cache;
-  if (likely (pthread_once != NULL))
+  if (likely (trace_cache_once_happen == 0))
   {
-    pthread_once(&trace_cache_once, &trace_cache_init_once);
     if (!trace_cache_once_happen)
     {
       return trace_cache_get_unthreaded();
