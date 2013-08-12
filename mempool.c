@@ -106,11 +106,11 @@ expand (struct mempool *pool)
   char *mem;
 
   size = pool->chunk_size;
-  GET_MEMORY (mem, size);
+  GET_MEMORY (mem, size, M_LIBUNWIND_TYPE);
   if (!mem)
     {
       size = UNW_ALIGN(pool->obj_size, pg_size);
-      GET_MEMORY (mem, size);
+      GET_MEMORY (mem, size, M_LIBUNWIND_TYPE);
       if (!mem)
 	{
 	  /* last chance: try to allocate one object from the SOS memory */
@@ -129,7 +129,7 @@ mempool_init (struct mempool *pool, size_t obj_size, size_t reserve)
 
   memset (pool, 0, sizeof (*pool));
 
-  lock_init (&pool->lock);
+  lock_init (&pool->lock, "mempool lock");
 
   /* round object-size up to integer multiple of MAX_ALIGN */
   obj_size = UNW_ALIGN(obj_size, MAX_ALIGN);
