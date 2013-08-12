@@ -28,6 +28,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "unwind_i.h"
 #include <sys/signal.h>
 
+/* Rather turn on checks in the kernel. */
+#define CONSERVATIVE_CHECKS 1
+
 /* Recognise PLT entries such as:
      3bdf0: ff 25 e2 49 13 00 jmpq   *0x1349e2(%rip)
      3bdf6: 68 ae 03 00 00    pushq  $0x3ae
