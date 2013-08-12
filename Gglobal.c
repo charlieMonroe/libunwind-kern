@@ -57,21 +57,32 @@ HIDDEN const uint8_t dwarf_to_unw_regnum_map[DWARF_NUM_PRESERVED_REGS] =
 HIDDEN void
 tdep_init (void)
 {
+  uprintf("Initing lock\n");
   lock_init (&x86_64_lock, "tdep_init");
+  uprintf("Acquiring lock\n");
   lock_acquire (&x86_64_lock);
   {
     if (tdep_init_done)
       /* another thread else beat us to it... */
       goto out;
 
+  uprintf("mi Initing lock\n");
+
     mi_init ();
+  uprintf("dwarf Initing lock\n");
 
     dwarf_init ();
 
+  uprintf("Initing mem val lock\n");
+
     tdep_init_mem_validate ();
+  uprintf("Inited mem val lock\n");
 
     tdep_init_done = 1;	/* signal that we're initialized... */
   }
  out:
+  uprintf("Unlocking lock\n");
+
   lock_release (&x86_64_lock);
+  uprintf("Unlocked lock\n");
 }

@@ -11,7 +11,9 @@ static void show_backtrace(void){
 	unw_word_t ip, sp;
 
 	unw_getcontext(&uc);
+	uprintf("Got context\n");
 	unw_init_local(&cursor, &uc);
+	uprintf("Inited local\n");
 	while (unw_step(&cursor) > 0) {
 		unw_get_reg(&cursor, UNW_REG_IP, &ip);
 		unw_get_reg(&cursor, UNW_REG_SP, &sp);

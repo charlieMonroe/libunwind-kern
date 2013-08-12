@@ -1,3 +1,4 @@
+CFLAGS  += -O0
 KMOD	= libunwind
 SRCS	= libunwind.c \
 		Unwind.c \
