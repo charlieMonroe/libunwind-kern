@@ -87,7 +87,7 @@ trace_cache_buckets (size_t n)
   unw_tdep_frame_t *frames;
   size_t i;
 
-  GET_MEMORY(frames, n * sizeof (unw_tdep_frame_t));
+  GET_MEMORY(frames, n * sizeof (unw_tdep_frame_t), M_LIBUNWIND_TYPE);
   if (likely(frames != NULL))
     for (i = 0; i < n; ++i)
       frames[i] = empty_frame;
