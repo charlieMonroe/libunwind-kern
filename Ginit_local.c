@@ -48,7 +48,7 @@ uprintf("done tdep init\n");
   Debug (1, "(cursor=%p)\n", c);
 
   c->dwarf.as = unw_local_addr_space;
-  c->dwarf.as_arg = c;
+  c->dwarf.as_arg = c;  
   c->uc = uc;
   c->validate = 0;
   return common_init (c, 1);

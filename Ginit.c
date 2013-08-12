@@ -260,4 +260,6 @@ x86_64_local_addr_space_init (void)
 
   memset (last_good_addr, 0, sizeof (unw_word_t) * NLGA);
   lga_victim = 0;
+  
+  lock_init(&local_addr_space.global_cache.lock, "local address space global cache lock");
 }
