@@ -42,6 +42,7 @@ SRCS	= libunwind.c \
 		malloc_types.c \
 		dwarf_Lstep.c \
 		global.c \
+		Ltrace.c \
 		Lexpr.c \
 		Lfde.c \
 		Lfind_proc_info-lsb.c \
