@@ -28,7 +28,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #define UNW_LOCAL_ONLY
 #include "include/libunwind.h"
 #include "include/libunwind_i.h"
-#include <sys/string.h>
 
 /* See glibc manual for a description of this function.  */
 
