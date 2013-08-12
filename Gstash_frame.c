@@ -26,6 +26,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "ucontext_i.h"
 
 HIDDEN void
+tdep_stash_frame (struct dwarf_cursor *d, struct dwarf_reg_state *rs);
+
+HIDDEN void
 tdep_stash_frame (struct dwarf_cursor *d, struct dwarf_reg_state *rs)
 {
   struct cursor *c = (struct cursor *) dwarf_to_cursor (d);
