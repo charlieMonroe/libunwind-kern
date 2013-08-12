@@ -58,6 +58,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #define assert(cond)			\
 	if (!(cond)) { panic(""); }
 
+#define abort() panic("")
 
 #if UNW_DEBUG
 #define unwi_debug_level		UNWI_ARCH_OBJ(debug_level)
