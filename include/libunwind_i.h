@@ -94,6 +94,7 @@ do {									\
 #define mutex_unlock(l)							\
 	sx_unlock(l)
 
+MALLOC_DECLARE(M_LIBUNWIND_TYPE);
 
 static inline int
 cmpxchg_ptr (void *addr, void *old, void *new)

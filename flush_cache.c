@@ -36,8 +36,8 @@ unw_flush_cache (unw_addr_space_t as, unw_word_t lo, unw_word_t hi)
   for (; w; w = w->next)
     {
       if (w->index)
-        free (w->index);
-      free (w->debug_frame);
+        free (w->index, M_LIBUNWIND_TYPE);
+      free (w->debug_frame, M_LIBUNWIND_TYPE);
     }
   as->debug_frames = NULL;
 

@@ -40,6 +40,7 @@ SRCS	= libunwind.c \
 		Lset_fpreg.c \
 		Lset_reg.c \
 		mempool.c \
-		strerror.c
+		strerror.c \
+		 malloc_types.c
 
 .include <bsd.kmod.mk>
