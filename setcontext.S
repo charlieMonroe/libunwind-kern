@@ -70,13 +70,6 @@ _Ux86_64_setcontext:
 	movq	%rcx,%r10
 	syscall
 	popq	%rdi
-
-	/* restore fp state */
-	cmpq $UC_MCONTEXT_FPOWNED_FPU,UC_MCONTEXT_OWNEDFP(%rdi)
-	jne 1f
-	cmpq $UC_MCONTEXT_FPFMT_XMM,UC_MCONTEXT_FPFORMAT(%rdi)
-	jne 1f
-	fxrstor UC_MCONTEXT_FPSTATE(%rdi)
 1:
 #else
 #error Port me

@@ -65,9 +65,6 @@ _Ux86_64_getcontext:
 	fnstenv (%r8)
 	stmxcsr FPREGS_OFFSET_MXCSR(%r8)
 #elif defined __FreeBSD__
-	fxsave UC_MCONTEXT_FPSTATE(%rdi)
-	movq $UC_MCONTEXT_FPOWNED_FPU,UC_MCONTEXT_OWNEDFP(%rdi)
-	movq $UC_MCONTEXT_FPFMT_XMM,UC_MCONTEXT_FPFORMAT(%rdi)
 	/* Save rflags and segment registers, so that sigreturn(2)
 	does not complain. */
 	pushfq
