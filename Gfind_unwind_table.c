@@ -32,7 +32,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "include/libunwind_i.h"
 #include "dwarf-eh.h"
-#include "dwarf_i.h"
+#include "include/dwarf_i.h"
 
 int
 dwarf_find_unwind_table (struct elf_dyn_info *edi, unw_addr_space_t as,

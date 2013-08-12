@@ -24,7 +24,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <stddef.h>
-#include "dwarf_i.h"
+#include "include/dwarf_i.h"
 #include "include/libunwind_i.h"
 
 #define alloc_reg_state()	(mempool_alloc (&dwarf_reg_state_pool))

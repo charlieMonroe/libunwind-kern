@@ -358,7 +358,7 @@ ALIAS (_Unwind_SetIP);
 
 
 #ifdef UNW_TARGET_X86
-#include "dwarf_i.h"
+#include "include/dwarf_i.h"
 #endif
 
 PROTECTED void

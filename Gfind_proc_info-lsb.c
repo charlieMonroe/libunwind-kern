@@ -33,7 +33,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include <stdio.h>
 #include <limits.h>
 
-#include "dwarf_i.h"
+#include "include/dwarf_i.h"
 #include "dwarf-eh.h"
 #include "include/libunwind_i.h"
 
