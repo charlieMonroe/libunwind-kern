@@ -60,9 +60,7 @@ trace_cache_free (void *arg)
   
   tls_cache_destroyed = 1;
   tls_cache = NULL;
-  // TODO
-  // munmap (cache->frames, (1u << cache->log_size) * sizeof(unw_tdep_frame_t));
-  mempool_free (&trace_cache_pool, cache);
+
   Debug(5, "freed cache %p\n", cache);
 }
 
