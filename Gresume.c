@@ -25,8 +25,6 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
-#include <stdlib.h>
-
 #include "offsets.h"
 #include "unwind_i.h"
 
@@ -47,7 +45,7 @@ x86_64_local_resume (unw_addr_space_t as, unw_cursor_t *cursor, void *arg)
   if (unlikely (c->sigcontext_format != X86_64_SCF_NONE))
     {
       x86_64_sigreturn(cursor);
-      abort();
+      panic("");
     }
   else
     {
