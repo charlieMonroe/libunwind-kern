@@ -28,18 +28,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "unwind_i.h"
 
 /* Avoid a trip to x86_64_r_uc_addr() for purely local initialisation. */
-#if defined UNW_LOCAL_ONLY && defined __linux
-# define REG_INIT_LOC(c, rlc, ruc) \
-    DWARF_LOC ((unw_word_t) &c->uc->uc_mcontext.gregs[REG_ ## ruc], 0)
-
-#elif defined UNW_LOCAL_ONLY && defined __FreeBSD__
 # define REG_INIT_LOC(c, rlc, ruc) \
     DWARF_LOC ((unw_word_t) &c->uc->uc_mcontext.mc_ ## rlc, 0)
-
-#else
-# define REG_INIT_LOC(c, rlc, ruc) \
-    DWARF_REG_LOC (&c->dwarf, UNW_X86_64_ ## ruc)
-#endif
 
 static inline int
 common_init (struct cursor *c, unsigned use_prev_instr)
