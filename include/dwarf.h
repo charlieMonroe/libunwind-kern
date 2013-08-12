@@ -26,16 +26,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #ifndef dwarf_h
 #define dwarf_h
 
-#include <libunwind.h>
+#include "libunwind.h"
 
 struct dwarf_cursor;	/* forward-declaration */
 struct elf_dyn_info;
 
-#include "dwarf-config.h"
-#ifndef UNW_REMOTE_ONLY
-#include <link.h>
-#endif
-#include <pthread.h>
+#include "tdep-x86_64/dwarf-config.h"
 
 /* DWARF expression opcodes.  */
 
