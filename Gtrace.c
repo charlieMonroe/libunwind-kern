@@ -130,7 +130,7 @@ trace_cache_create (void)
 static int
 trace_cache_expand (unw_trace_cache_t *cache)
 {
-  size_t old_size = (1u << cache->log_size);
+  //size_t old_size = (1u << cache->log_size);
   size_t new_log_size = cache->log_size + 2;
   unw_tdep_frame_t *new_frames = trace_cache_buckets (1u << new_log_size);
 
