@@ -28,8 +28,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <sys/ucontext.h>
 #include <machine/sigframe.h>
-#include <signal.h>
-#include <stddef.h>
+#include <sys/signal.h>
+#include <sys/stddef.h>
 #include "unwind_i.h"
 #include "ucontext_i.h"
 
@@ -194,6 +194,6 @@ x86_64_sigreturn (unw_cursor_t *cursor)
   Debug (8, "resuming at ip=%llx via sigreturn(%p)\n",
 	     (unsigned long long) c->dwarf.ip, uc);
   sigreturn(uc);
-  abort();
+  panic("");
 }
 #endif
