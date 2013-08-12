@@ -55,8 +55,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define UNW_DEBUG	0
 #endif
 
-#define assert(cond, format...)			\
-	if (!(cond)) { printf(format); panic(""); }
+#define assert(cond)			\
+	if (!(cond)) { panic(""); }
 
 
 #if UNW_DEBUG
