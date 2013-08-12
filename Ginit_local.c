@@ -28,6 +28,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "unwind_i.h"
 #include "init.h"
 
+HIDDEN void
+x86_64_local_addr_space_init (void);
 
 PROTECTED int
 unw_init_local (unw_cursor_t *cursor, ucontext_t *uc)
@@ -36,8 +38,10 @@ unw_init_local (unw_cursor_t *cursor, ucontext_t *uc)
 
 uprintf("initing local\n");
 
-  if (unlikely (!tdep_init_done))
+  if (unlikely (!tdep_init_done)){
+    x86_64_local_addr_space_init();
     tdep_init ();
+  }
 
 uprintf("done tdep init\n");
 
