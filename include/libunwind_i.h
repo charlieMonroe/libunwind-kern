@@ -55,14 +55,36 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define UNW_DEBUG	0
 #endif
 
-/* Make it easy to write thread-safe code which may or may not be
-   linked against libpthread.  The macros below can be used
-   unconditionally and if -lpthread is around, they'll call the
-   corresponding routines otherwise, they do nothing.  */
+#define assert(cond, format...)			\
+	if (!(cond)) { printf(format); panic(""); }
 
-#pragma weak pthread_mutex_init
-#pragma weak pthread_mutex_lock
-#pragma weak pthread_mutex_unlock
+
+#if UNW_DEBUG
+#define unwi_debug_level		UNWI_ARCH_OBJ(debug_level)
+extern long unwi_debug_level;
+
+# define Debug(level,format...)						\
+do {									\
+  if (unwi_debug_level >= level)					\
+    {									\
+      int _n = level;							\
+      if (_n > 16)							\
+	_n = 16;							\
+      uprintf ("%*c>%s: ", _n, ' ', __FUNCTION__);		\
+      uprintf (format);						\
+    }									\
+} while (0)
+# define Dprintf(format...) 	    printf (format)
+# ifdef __GNUC__
+#  undef inline
+#  define inline	UNUSED
+# endif
+#else
+# define Debug(level,format...)
+# define Dprintf(format...)
+#endif
+
+#include "dwarf_i.h"
 
 #define mutex_init(l, name)							\
 	sx_init_flags(l, name, SX_RECURSE)
@@ -155,32 +177,7 @@ extern void unwi_dyn_remote_put_unwind_info (unw_addr_space_t as,
 extern int unwi_dyn_validate_cache (unw_addr_space_t as, void *arg);
 
 extern unw_dyn_info_list_t _U_dyn_info_list;
-extern pthread_mutex_t _U_dyn_info_list_lock;
-
-#if UNW_DEBUG
-#define unwi_debug_level		UNWI_ARCH_OBJ(debug_level)
-extern long unwi_debug_level;
-
-# define Debug(level,format...)						\
-do {									\
-  if (unwi_debug_level >= level)					\
-    {									\
-      int _n = level;							\
-      if (_n > 16)							\
-	_n = 16;							\
-      uprintf ("%*c>%s: ", _n, ' ', __FUNCTION__);		\
-      uprintf (format);						\
-    }									\
-} while (0)
-# define Dprintf(format...) 	    printf (format)
-# ifdef __GNUC__
-#  undef inline
-#  define inline	UNUSED
-# endif
-#else
-# define Debug(level,format...)
-# define Dprintf(format...)
-#endif
+extern struct sx _U_dyn_info_list_lock;
 
 static ALWAYS_INLINE int
 print_error (const char *string)
