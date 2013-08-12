@@ -1,187 +1,85 @@
-mempool.c:109:24: error: too few arguments provided to function-like macro invocation
-  GET_MEMORY (mem, size);
-                       ^
-./include/libunwind_i.h:143:9: note: macro 'GET_MEMORY' defined here
-#define GET_MEMORY(mem, size, type)                                                 \
+In file included from Lparser.c:4:
+./Gparser.c:531:35: error: too many arguments provided to function-like macro invocation
+      lock_acquire (&cache->lock, *saved_maskp);
+                                  ^
+./include/libunwind_i.h:133:9: note: macro 'lock_acquire' defined here
+#define lock_acquire(l)                         \
         ^
-mempool.c:109:3: error: use of undeclared identifier 'GET_MEMORY'
-  GET_MEMORY (mem, size);
-  ^
-mempool.c:113:28: error: too few arguments provided to function-like macro invocation
-      GET_MEMORY (mem, size);
-                           ^
-./include/libunwind_i.h:143:9: note: macro 'GET_MEMORY' defined here
-#define GET_MEMORY(mem, size, type)                                                 \
-        ^
-mempool.c:113:7: error: use of undeclared identifier 'GET_MEMORY'
-      GET_MEMORY (mem, size);
+In file included from Lparser.c:4:
+./Gparser.c:531:7: error: use of undeclared identifier 'lock_acquire'
+      lock_acquire (&cache->lock, *saved_maskp);
       ^
-mempool.c:128:15: error: implicit declaration of function 'getpagesize' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-    pg_size = getpagesize ();
-              ^
-mempool.c:132:25: error: too few arguments provided to function-like macro invocation
-  lock_init (&pool->lock);
-                        ^
-./include/libunwind_i.h:132:9: note: macro 'lock_init' defined here
-#define lock_init(l, name)              mutex_init (l, name)
+./Gparser.c:551:33: error: too many arguments provided to function-like macro invocation
+    lock_release (&cache->lock, *saved_maskp);
+                                ^
+./include/libunwind_i.h:135:9: note: macro 'lock_release' defined here
+#define lock_release(l)                 \
         ^
-mempool.c:132:3: error: expression result unused [-Werror,-Wunused-value]
-  lock_init (&pool->lock);
-  ^~~~~~~~~
-mempool.c:156:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
-  lock_acquire (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:134:3: note: expanded from macro 'lock_acquire'
-  mutex_lock (l);
-  ^~~~~~~~~~~~~~
-./include/libunwind_i.h:93:2: note: expanded from macro 'mutex_lock'
-        sx_xlock(l)
-        ^~~~~~~~~~~
-@/sys/sx.h:248:23: note: expanded from macro 'sx_xlock'
-#define sx_xlock(sx)            sx_xlock_((sx), LOCK_FILE, LOCK_LINE)
-                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:212:18: note: expanded from macro 'sx_xlock_'
-        (void)_sx_xlock((sx), 0, (file), (line))
-                        ^~~~
-@/sys/sx.h:102:26: note: passing argument to parameter 'sx' here
-int     _sx_xlock(struct sx *sx, int opts, const char *file, int line);
-                             ^
-mempool.c:167:3: error: member reference base type 'pthread_mutex_t' (aka 'struct pthread_mutex *') is not a structure or union
-  lock_release (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
-  mutex_unlock (l);
-  ^~~~~~~~~~~~~~~~
-./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
-        sx_unlock(l)
-        ^~~~~~~~~~~~
-@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
-#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
-                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:269:6: note: expanded from macro 'sx_unlock_'
-        if (sx_xlocked(sx))                                             \
-            ^~~~~~~~~~~~~~
-@/sys/sx.h:265:8: note: expanded from macro 'sx_xlocked'
-        (((sx)->sx_lock & ~(SX_LOCK_FLAGMASK & ~SX_LOCK_SHARED)) ==     \
-          ~~~~^ ~~~~~~~
-mempool.c:167:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
-  lock_release (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
-  mutex_unlock (l);
-  ^~~~~~~~~~~~~~~~
-./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
-        sx_unlock(l)
-        ^~~~~~~~~~~~
-@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
-#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
-                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:270:3: note: expanded from macro 'sx_unlock_'
-                sx_xunlock_(sx, file, line);                            \
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:216:14: note: expanded from macro 'sx_xunlock_'
-        _sx_xunlock((sx), (file), (line))
-                    ^~~~
-@/sys/sx.h:104:29: note: passing argument to parameter 'sx' here
-void    _sx_xunlock(struct sx *sx, const char *file, int line);
-                               ^
-mempool.c:167:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
-  lock_release (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
-  mutex_unlock (l);
-  ^~~~~~~~~~~~~~~~
-./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
-        sx_unlock(l)
-        ^~~~~~~~~~~~
-@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
-#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
-                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:272:3: note: expanded from macro 'sx_unlock_'
-                sx_sunlock_(sx, file, line);                            \
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:222:14: note: expanded from macro 'sx_sunlock_'
-        _sx_sunlock((sx), (file), (line))
-                    ^~~~
-@/sys/sx.h:103:29: note: passing argument to parameter 'sx' here
-void    _sx_sunlock(struct sx *sx, const char *file, int line);
-                               ^
-mempool.c:174:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
-  lock_acquire (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:134:3: note: expanded from macro 'lock_acquire'
-  mutex_lock (l);
-  ^~~~~~~~~~~~~~
-./include/libunwind_i.h:93:2: note: expanded from macro 'mutex_lock'
-        sx_xlock(l)
-        ^~~~~~~~~~~
-@/sys/sx.h:248:23: note: expanded from macro 'sx_xlock'
-#define sx_xlock(sx)            sx_xlock_((sx), LOCK_FILE, LOCK_LINE)
-                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:212:18: note: expanded from macro 'sx_xlock_'
-        (void)_sx_xlock((sx), 0, (file), (line))
-                        ^~~~
-@/sys/sx.h:102:26: note: passing argument to parameter 'sx' here
-int     _sx_xlock(struct sx *sx, int opts, const char *file, int line);
-                             ^
-mempool.c:178:3: error: member reference base type 'pthread_mutex_t' (aka 'struct pthread_mutex *') is not a structure or union
-  lock_release (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
-  mutex_unlock (l);
-  ^~~~~~~~~~~~~~~~
-./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
-        sx_unlock(l)
-        ^~~~~~~~~~~~
-@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
-#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
-                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:269:6: note: expanded from macro 'sx_unlock_'
-        if (sx_xlocked(sx))                                             \
-            ^~~~~~~~~~~~~~
-@/sys/sx.h:265:8: note: expanded from macro 'sx_xlocked'
-        (((sx)->sx_lock & ~(SX_LOCK_FLAGMASK & ~SX_LOCK_SHARED)) ==     \
-          ~~~~^ ~~~~~~~
-mempool.c:178:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
-  lock_release (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
-  mutex_unlock (l);
-  ^~~~~~~~~~~~~~~~
-./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
-        sx_unlock(l)
-        ^~~~~~~~~~~~
-@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
-#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
-                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:270:3: note: expanded from macro 'sx_unlock_'
-                sx_xunlock_(sx, file, line);                            \
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:216:14: note: expanded from macro 'sx_xunlock_'
-        _sx_xunlock((sx), (file), (line))
-                    ^~~~
-@/sys/sx.h:104:29: note: passing argument to parameter 'sx' here
-void    _sx_xunlock(struct sx *sx, const char *file, int line);
-                               ^
-mempool.c:178:3: error: incompatible pointer types passing 'pthread_mutex_t *' (aka 'struct pthread_mutex **') to parameter of type 'struct sx *' [-Werror,-Wincompatible-pointer-types]
-  lock_release (&pool->lock);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/libunwind_i.h:136:3: note: expanded from macro 'lock_release'
-  mutex_unlock (l);
-  ^~~~~~~~~~~~~~~~
-./include/libunwind_i.h:95:2: note: expanded from macro 'mutex_unlock'
-        sx_unlock(l)
-        ^~~~~~~~~~~~
-@/sys/sx.h:275:23: note: expanded from macro 'sx_unlock'
-#define sx_unlock(sx)   sx_unlock_((sx), LOCK_FILE, LOCK_LINE)
-                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:272:3: note: expanded from macro 'sx_unlock_'
-                sx_sunlock_(sx, file, line);                            \
-                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-@/sys/sx.h:222:14: note: expanded from macro 'sx_sunlock_'
-        _sx_sunlock((sx), (file), (line))
-                    ^~~~
-@/sys/sx.h:103:29: note: passing argument to parameter 'sx' here
-void    _sx_sunlock(struct sx *sx, const char *file, int line);
-                               ^
-15 errors generated.
+In file included from Lparser.c:4:
+./Gparser.c:551:5: error: use of undeclared identifier 'lock_release'; did you mean 'sess_release'?
+    lock_release (&cache->lock, *saved_maskp);
+    ^~~~~~~~~~~~
+    sess_release
+@/sys/proc.h:890:6: note: 'sess_release' declared here
+void    sess_release(struct session *);
+        ^
+In file included from Lparser.c:4:
+./Gparser.c:551:5: error: expression result unused [-Werror,-Wunused-value]
+    lock_release (&cache->lock, *saved_maskp);
+    ^~~~~~~~~~~~
+./Gparser.c:815:5: error: implicit declaration of function '_ULx86_64_stash_frame' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+    tdep_stash_frame (c, rs);
+    ^
+./include/tdep/../tdep-x86_64/libunwind_i.h:190:27: note: expanded from macro 'tdep_stash_frame'
+#define tdep_stash_frame                UNW_OBJ(stash_frame)
+                                        ^
+./include/libunwind-common.h:35:21: note: expanded from macro 'UNW_OBJ'
+#define UNW_OBJ(fn)     UNW_PASTE(UNW_PREFIX, fn)
+                        ^
+./include/libunwind-common.h:34:24: note: expanded from macro 'UNW_PASTE'
+#define UNW_PASTE(x,y)  UNW_PASTE2(x,y)
+                        ^
+./include/libunwind-common.h:33:25: note: expanded from macro 'UNW_PASTE2'
+#define UNW_PASTE2(x,y) x##y
+                        ^
+<scratch space>:221:1: note: expanded from here
+_ULx86_64_stash_frame
+^
+./Gparser.c:815:5: note: did you mean '_ULx86_64_tdep_trace'?
+    tdep_stash_frame (c, rs);
+    ^~~~~~~~~~~~~~~~
+    _ULx86_64_tdep_trace
+./include/tdep/../tdep-x86_64/libunwind_i.h:190:27: note: expanded from macro 'tdep_stash_frame'
+#define tdep_stash_frame                UNW_OBJ(stash_frame)
+                                        ^
+./include/libunwind-common.h:35:21: note: expanded from macro 'UNW_OBJ'
+#define UNW_OBJ(fn)     UNW_PASTE(UNW_PREFIX, fn)
+                        ^
+./include/libunwind-common.h:34:24: note: expanded from macro 'UNW_PASTE'
+#define UNW_PASTE(x,y)  UNW_PASTE2(x,y)
+                        ^
+./include/libunwind-common.h:33:25: note: expanded from macro 'UNW_PASTE2'
+#define UNW_PASTE2(x,y) x##y
+                        ^
+<scratch space>:221:1: note: expanded from here
+_ULx86_64_stash_frame
+^
+./include/tdep/../tdep-x86_64/libunwind_i.h:230:12: note: '_ULx86_64_tdep_trace' declared here
+extern int tdep_trace (unw_cursor_t *cursor, void **addresses, int *n);
+           ^
+./include/tdep/../tdep-x86_64/libunwind_i.h:191:22: note: expanded from macro 'tdep_trace'
+#define tdep_trace                      UNW_OBJ(tdep_trace)
+                                        ^
+./include/libunwind-common.h:35:21: note: expanded from macro 'UNW_OBJ'
+#define UNW_OBJ(fn)     UNW_PASTE(UNW_PREFIX, fn)
+                        ^
+./include/libunwind-common.h:34:24: note: expanded from macro 'UNW_PASTE'
+#define UNW_PASTE(x,y)  UNW_PASTE2(x,y)
+                        ^
+./include/libunwind-common.h:33:25: note: expanded from macro 'UNW_PASTE2'
+#define UNW_PASTE2(x,y) x##y
+                        ^
+<scratch space>:159:1: note: expanded from here
+_ULx86_64_tdep_trace
+^
+6 errors generated.

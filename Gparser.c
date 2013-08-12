@@ -24,7 +24,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <sys/stddef.h>
-#include "libunwind-internal.h"
+#include "unwind-internal.h"
 #include "include/dwarf_i.h"
 #include "include/libunwind_i.h"
 
