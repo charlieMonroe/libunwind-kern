@@ -50,6 +50,12 @@ HIDDEN unw_dyn_info_list_t _U_dyn_info_list;
        unwind-table entry.  Perhaps something similar can be done with
        DWARF2 unwind info.  */
 
+PROTECTED unw_word_t
+_U_dyn_info_list_addr (void)
+{
+	return (unw_word_t) (uintptr_t) &_U_dyn_info_list;
+}
+
 static void
 put_unwind_info (unw_addr_space_t as, unw_proc_info_t *proc_info, void *arg)
 {

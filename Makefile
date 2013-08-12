@@ -22,7 +22,6 @@ SRCS	= libunwind.c \
 		_ReadULEB.c \
 		backtrace.c \
 		dyn-cancel.c \
-		dyn-info-list.c \
 		dyn-register.c \
 		flush_cache.c \
 		init.c \
