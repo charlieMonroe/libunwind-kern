@@ -24,7 +24,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #ifndef libunwind_coredump_h
 #define libunwind_coredump_h
 
-#include <libunwind.h>
+#include "include/libunwind.h"
 
 #if defined(__cplusplus) || defined(c_plusplus)
 extern "C" {
