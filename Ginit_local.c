@@ -28,15 +28,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "unwind_i.h"
 #include "init.h"
 
-#ifdef UNW_REMOTE_ONLY
-
-PROTECTED int
-unw_init_local (unw_cursor_t *cursor, ucontext_t *uc)
-{
-  return -UNW_EINVAL;
-}
-
-#else /* !UNW_REMOTE_ONLY */
 
 PROTECTED int
 unw_init_local (unw_cursor_t *cursor, ucontext_t *uc)
@@ -55,4 +46,3 @@ unw_init_local (unw_cursor_t *cursor, ucontext_t *uc)
   return common_init (c, 1);
 }
 
-#endif /* !UNW_REMOTE_ONLY */
