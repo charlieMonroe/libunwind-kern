@@ -31,6 +31,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 /* Target-dependent definitions that are internal to libunwind but need
    to be shared with target-independent code.  */
 
+#ifndef UNW_LOCAL_ONLY
+	#define UNW_LOCAL_ONLY 1
+#endif
+
 #include "../libunwind.h"
 #include "../mempool.h"
 
