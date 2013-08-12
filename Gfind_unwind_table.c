@@ -30,7 +30,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include <sys/mman.h>
 
 #include "include/libunwind_i.h"
-#include "dwarf-eh.h"
+#include "include/dwarf-eh.h"
 #include "include/dwarf_i.h"
 
 int
