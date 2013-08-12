@@ -96,14 +96,6 @@ cmpxchg_ptr (void *addr, void *old, void *new)
 
 #define unwi_full_mask    UNWI_ARCH_OBJ(full_mask)
 
-/* Type of a mask that can be used to inhibit preemption.  At the
-   userlevel, preemption is caused by signals and hence sigset_t is
-   appropriate.  In constrast, the Linux kernel uses "unsigned long"
-   to hold the processor "flags" instead.  */
-typedef sigset_t intrmask_t;
-
-extern intrmask_t unwi_full_mask;
-
 /* Silence compiler warnings about variables which are used only if libunwind
    is configured in a certain way */
 static inline void mark_as_used(void *v UNUSED) {
