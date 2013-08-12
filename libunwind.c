@@ -10,6 +10,9 @@ static int event_handler(struct module *module, int event, void *arg)
 	case MOD_LOAD:
 		uprintf("Libunwind loaded.\n");
 		break;
+	case MOD_UNLOAD:
+		uprintf("Libunwind unloaded.\n");
+		break;
 	default:
 		e = EOPNOTSUPP;
 		break;

@@ -1,85 +1,76 @@
-In file included from Lparser.c:4:
-./Gparser.c:531:35: error: too many arguments provided to function-like macro invocation
-      lock_acquire (&cache->lock, *saved_maskp);
-                                  ^
-./include/libunwind_i.h:133:9: note: macro 'lock_acquire' defined here
-#define lock_acquire(l)                         \
-        ^
-In file included from Lparser.c:4:
-./Gparser.c:531:7: error: use of undeclared identifier 'lock_acquire'
-      lock_acquire (&cache->lock, *saved_maskp);
-      ^
-./Gparser.c:551:33: error: too many arguments provided to function-like macro invocation
-    lock_release (&cache->lock, *saved_maskp);
+In file included from Lpe.c:4:
+In file included from ./Gpe.c:26:
+In file included from ./include/dwarf_i.h:9:
+In file included from ./include/dwarf.h:31:
+In file included from @/sys/sx.h:39:
+In file included from @/sys/pcpu.h:40:
+@/sys/_cpuset.h:50:1: error: implicit declaration of function 'howmany' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+BITSET_DEFINE(_cpuset, CPU_SETSIZE);
+^
+@/sys/_bitset.h:52:24: note: expanded from macro 'BITSET_DEFINE'
+        long    __bits[__bitset_words((_s))];                           \
+                       ^
+@/sys/_bitset.h:41:29: note: expanded from macro '__bitset_words'
+#define __bitset_words(_s)      (howmany(_s, _BITSET_BITS))
+                                 ^
+In file included from Lpe.c:4:
+In file included from ./Gpe.c:26:
+In file included from ./include/dwarf_i.h:9:
+In file included from ./include/dwarf.h:31:
+In file included from @/sys/sx.h:39:
+In file included from @/sys/pcpu.h:40:
+@/sys/_cpuset.h:50:24: error: use of undeclared identifier 'MAXCPU'
+BITSET_DEFINE(_cpuset, CPU_SETSIZE);
+                       ^
+@/sys/_cpuset.h:38:21: note: expanded from macro 'CPU_SETSIZE'
+#define CPU_SETSIZE     MAXCPU
+                        ^
+@/sys/_bitset.h:52:40: note: expanded from macro 'BITSET_DEFINE'
+        long    __bits[__bitset_words((_s))];                           \
+                                       ^
+@/sys/_bitset.h:41:37: note: expanded from macro '__bitset_words'
+#define __bitset_words(_s)      (howmany(_s, _BITSET_BITS))
+                                         ^
+In file included from Lpe.c:4:
+In file included from ./Gpe.c:26:
+In file included from ./include/dwarf_i.h:9:
+In file included from ./include/dwarf.h:31:
+In file included from @/sys/sx.h:39:
+@/sys/pcpu.h:210:49: error: implicit declaration of function 'MIN' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+        return ((char *)(base) + sizeof(struct pcpu) * curcpu);
+                                                       ^
+@/sys/pcpu.h:198:17: note: expanded from macro 'curcpu'
+#define curcpu          PCPU_GET(cpuid)
+                        ^
+./machine/pcpu.h:220:26: note: expanded from macro 'PCPU_GET'
+#define PCPU_GET(member)        __PCPU_GET(pc_ ## member)
                                 ^
-./include/libunwind_i.h:135:9: note: macro 'lock_release' defined here
-#define lock_release(l)                 \
-        ^
-In file included from Lparser.c:4:
-./Gparser.c:551:5: error: use of undeclared identifier 'lock_release'; did you mean 'sess_release'?
-    lock_release (&cache->lock, *saved_maskp);
-    ^~~~~~~~~~~~
-    sess_release
-@/sys/proc.h:890:6: note: 'sess_release' declared here
-void    sess_release(struct session *);
-        ^
-In file included from Lparser.c:4:
-./Gparser.c:551:5: error: expression result unused [-Werror,-Wunused-value]
-    lock_release (&cache->lock, *saved_maskp);
-    ^~~~~~~~~~~~
-./Gparser.c:815:5: error: implicit declaration of function '_ULx86_64_stash_frame' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-    tdep_stash_frame (c, rs);
-    ^
-./include/tdep/../tdep-x86_64/libunwind_i.h:190:27: note: expanded from macro 'tdep_stash_frame'
-#define tdep_stash_frame                UNW_OBJ(stash_frame)
-                                        ^
-./include/libunwind-common.h:35:21: note: expanded from macro 'UNW_OBJ'
-#define UNW_OBJ(fn)     UNW_PASTE(UNW_PREFIX, fn)
+./machine/pcpu.h:135:14: note: expanded from macro '__PCPU_GET'
+                u_char  __b[MIN(sizeof(__pcpu_type(name)), 8)];         \
+                            ^
+In file included from Lpe.c:4:
+In file included from ./Gpe.c:26:
+In file included from ./include/dwarf_i.h:9:
+In file included from ./include/dwarf.h:31:
+In file included from @/sys/sx.h:39:
+@/sys/pcpu.h:210:49: error: fields must have a constant size: 'variable length array in structure' extension will never be supported
+@/sys/pcpu.h:198:17: note: expanded from macro 'curcpu'
+#define curcpu          PCPU_GET(cpuid)
                         ^
-./include/libunwind-common.h:34:24: note: expanded from macro 'UNW_PASTE'
-#define UNW_PASTE(x,y)  UNW_PASTE2(x,y)
+./machine/pcpu.h:220:26: note: expanded from macro 'PCPU_GET'
+#define PCPU_GET(member)        __PCPU_GET(pc_ ## member)
+                                ^
+./machine/pcpu.h:135:10: note: expanded from macro '__PCPU_GET'
+                u_char  __b[MIN(sizeof(__pcpu_type(name)), 8)];         \
                         ^
-./include/libunwind-common.h:33:25: note: expanded from macro 'UNW_PASTE2'
-#define UNW_PASTE2(x,y) x##y
-                        ^
-<scratch space>:221:1: note: expanded from here
-_ULx86_64_stash_frame
-^
-./Gparser.c:815:5: note: did you mean '_ULx86_64_tdep_trace'?
-    tdep_stash_frame (c, rs);
-    ^~~~~~~~~~~~~~~~
-    _ULx86_64_tdep_trace
-./include/tdep/../tdep-x86_64/libunwind_i.h:190:27: note: expanded from macro 'tdep_stash_frame'
-#define tdep_stash_frame                UNW_OBJ(stash_frame)
-                                        ^
-./include/libunwind-common.h:35:21: note: expanded from macro 'UNW_OBJ'
-#define UNW_OBJ(fn)     UNW_PASTE(UNW_PREFIX, fn)
-                        ^
-./include/libunwind-common.h:34:24: note: expanded from macro 'UNW_PASTE'
-#define UNW_PASTE(x,y)  UNW_PASTE2(x,y)
-                        ^
-./include/libunwind-common.h:33:25: note: expanded from macro 'UNW_PASTE2'
-#define UNW_PASTE2(x,y) x##y
-                        ^
-<scratch space>:221:1: note: expanded from here
-_ULx86_64_stash_frame
-^
-./include/tdep/../tdep-x86_64/libunwind_i.h:230:12: note: '_ULx86_64_tdep_trace' declared here
-extern int tdep_trace (unw_cursor_t *cursor, void **addresses, int *n);
-           ^
-./include/tdep/../tdep-x86_64/libunwind_i.h:191:22: note: expanded from macro 'tdep_trace'
-#define tdep_trace                      UNW_OBJ(tdep_trace)
-                                        ^
-./include/libunwind-common.h:35:21: note: expanded from macro 'UNW_OBJ'
-#define UNW_OBJ(fn)     UNW_PASTE(UNW_PREFIX, fn)
-                        ^
-./include/libunwind-common.h:34:24: note: expanded from macro 'UNW_PASTE'
-#define UNW_PASTE(x,y)  UNW_PASTE2(x,y)
-                        ^
-./include/libunwind-common.h:33:25: note: expanded from macro 'UNW_PASTE2'
-#define UNW_PASTE2(x,y) x##y
-                        ^
-<scratch space>:159:1: note: expanded from here
-_ULx86_64_tdep_trace
-^
+In file included from Lpe.c:4:
+In file included from ./Gpe.c:26:
+In file included from ./include/dwarf_i.h:9:
+In file included from ./include/dwarf.h:31:
+@/sys/sx.h:208:2: error: 	"LOCK_DEBUG not defined, include <sys/lock.h> before <sys/sx.h>"
+#error  "LOCK_DEBUG not defined, include <sys/lock.h> before <sys/sx.h>"
+ ^
+@/sys/sx.h:210:6: error: 'LOCK_DEBUG' is not defined, evaluates to 0 [-Werror,-Wundef]
+#if     (LOCK_DEBUG > 0) || defined(SX_NOINLINE)
+         ^
 6 errors generated.
