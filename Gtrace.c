@@ -160,16 +160,15 @@ static unw_trace_cache_t *
 trace_cache_get_unthreaded (void)
 {
   unw_trace_cache_t *cache;
-  intrmask_t saved_mask;
   static unw_trace_cache_t *global_cache = NULL;
-  lock_acquire (&trace_init_lock, saved_mask);
+  lock_acquire (&trace_init_lock);
   if (! global_cache)
   {
     mempool_init (&trace_cache_pool, sizeof (unw_trace_cache_t), 0);
     global_cache = trace_cache_create ();
   }
   cache = global_cache;
-  lock_release (&trace_init_lock, saved_mask);
+  lock_release (&trace_init_lock);
   Debug(5, "using cache %p\n", cache);
   return cache;
 }
