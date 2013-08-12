@@ -95,8 +95,6 @@ extern void _Unwind_SetIP (struct _Unwind_Context *, unsigned long);
 extern unsigned long _Unwind_GetLanguageSpecificData (struct _Unwind_Context*);
 extern unsigned long _Unwind_GetRegionStart (struct _Unwind_Context *);
 
-#ifdef _GNU_SOURCE
-
 /* Callback for _Unwind_Backtrace().  The backtrace stops immediately
    if the callback returns any value other than _URC_NO_REASON. */
 typedef _Unwind_Reason_Code (*_Unwind_Trace_Fn) (struct _Unwind_Context *,
@@ -145,7 +143,6 @@ extern void *_Unwind_FindEnclosingFunction (void *);
 /* See also Linux Standard Base Spec:
     http://www.linuxbase.org/spec/refspecs/LSB_1.3.0/gLSB/gLSB/libgcc-s.html */
 
-#endif /* _GNU_SOURCE */
 
 #ifdef __cplusplus
 };

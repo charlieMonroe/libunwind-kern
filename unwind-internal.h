@@ -120,7 +120,7 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
 		{
 		  /* we may regain control via _Unwind_Resume() */
 		  unw_resume (&context->cursor);
-		  abort ();
+		  panic ("");
 		}
 	      else
 		return _URC_FATAL_PHASE2_ERROR;
@@ -128,7 +128,7 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
 	  if (actions & _UA_HANDLER_FRAME)
 	    /* The personality routine for the handler-frame changed
 	       it's mind; that's a no-no... */
-	    abort ();
+	    panic ("");
 	}
     }
   return _URC_FATAL_PHASE2_ERROR;	/* shouldn't be reached */
