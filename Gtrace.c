@@ -181,14 +181,14 @@ trace_cache_get (void)
   unw_trace_cache_t *cache;
   if (likely (trace_cache_once_happen == 0))
   {
-    if (!trace_cache_once_happen)
-    {
-      return trace_cache_get_unthreaded();
-    }
+    sx_xlock(&trace_init_lock);
+    trace_cache_once();
+    sx_unlock(&trace_init_lock);
+
     if (! (cache = tls_cache))
     {
       cache = trace_cache_create();
-      pthread_setspecific(trace_cache_key, cache);
+      osd_thread_set(curthread, trace_cache_key, cache);
       tls_cache = cache;
     }
     Debug(5, "using cache %p\n", cache);
