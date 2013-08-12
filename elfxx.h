@@ -24,9 +24,9 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
-#include <elf.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include <sys/elf.h>
+#include <sys/fcntl.h>
+#include <sys/unistd.h>
 
 #include <sys/mman.h>
 #include <sys/stat.h>
