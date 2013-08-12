@@ -133,7 +133,7 @@ dwarf_getfp (struct dwarf_cursor *c, dwarf_loc_t loc, unw_fpreg_t *val)
   if (DWARF_IS_NULL_LOC (loc))
     return -UNW_EBADREG;
 
-  abort ();
+  panic ("");
 }
 
 static inline int
@@ -142,7 +142,7 @@ dwarf_putfp (struct dwarf_cursor *c, dwarf_loc_t loc, unw_fpreg_t val)
   if (DWARF_IS_NULL_LOC (loc))
     return -UNW_EBADREG;
 
-  abort ();
+  panic ("");
 }
 
 static inline int
