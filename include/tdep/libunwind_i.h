@@ -2,7 +2,7 @@
    when multiple different arch releases are installed simultaneously.  */
 
 #if defined __x86_64__
-# include "tdep-x86_64/libunwind_i.h"
+# include "../tdep-x86_64/libunwind_i.h"
 #else
 # error "Unsupported arch"
 #endif
