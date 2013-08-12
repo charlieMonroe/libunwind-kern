@@ -1,18 +1,7 @@
 KMOD	= libunwind
 SRCS	= libunwind.c \
 		Unwind.c \
-		Gcreate_addr_space.c \
 		getcontext.S \
-		Gget_proc_info.c \
-		Gget_save_loc.c \
-		Gglobal.c \
-		Ginit_local.c \
-		Ginit.c \
-		Gos-freebsd.c \
-		Gregs.c \
-		Gresume.c \
-		Gstash_frame.c \
-		Gstep.c \
 		is_fpreg.c \
 		Lcreate_addr_space.c \
 		Lget_proc_info.c \
