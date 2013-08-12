@@ -24,13 +24,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "unwind_i.h"
 #include "ucontext_i.h"
-#include <signal.h>
-#include <limits.h>
-
-#pragma weak pthread_once
-#pragma weak pthread_key_create
-#pragma weak pthread_getspecific
-#pragma weak pthread_setspecific
+#include <sys/signal.h>
+#include <sys/limits.h>
 
 /* Initial hash table size. Table expands by 2 bits (times four). */
 #define HASH_MIN_BITS 14
