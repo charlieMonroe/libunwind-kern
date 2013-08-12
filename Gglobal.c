@@ -57,6 +57,7 @@ HIDDEN const uint8_t dwarf_to_unw_regnum_map[DWARF_NUM_PRESERVED_REGS] =
 HIDDEN void
 tdep_init (void)
 {
+  lock_init (&x86_64_lock);
   lock_acquire (&x86_64_lock);
   {
     if (tdep_init_done)
