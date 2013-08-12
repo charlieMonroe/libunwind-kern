@@ -129,9 +129,9 @@ static inline void mark_as_used(void *v UNUSED) {
 #define define_lock(name) \
   struct sx name;
 #define lock_init(l, name)		mutex_init (l, name)
-#define lock_acquire(l,m)				\
+#define lock_acquire(l)				\
   mutex_lock (l);
-#define lock_release(l,m)			\
+#define lock_release(l)			\
   mutex_unlock (l);
 
 #define SOS_MEMORY_SIZE 16384	/* see src/mi/mempool.c */

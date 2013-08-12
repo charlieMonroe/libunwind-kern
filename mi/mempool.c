@@ -57,9 +57,7 @@ sos_alloc (size_t size)
   pos = fetch_and_add (&sos_memory_freepos, size);
 #else
   static define_lock (sos_lock);
-  intrmask_t saved_mask;
-
-  lock_acquire (&sos_lock, saved_mask);
+  lock_acquire (&sos_lock);
   {
     /* No assumptions about `sos_memory' alignment. */
     if (sos_memory_freepos == 0)
@@ -71,7 +69,7 @@ sos_alloc (size_t size)
     pos = sos_memory_freepos;
     sos_memory_freepos += size;
   }
-  lock_release (&sos_lock, saved_mask);
+  lock_release (&sos_lock);
 #endif
 
   assert (((uintptr_t) &sos_memory[pos] & (MAX_ALIGN-1)) == 0);
@@ -153,10 +151,9 @@ mempool_init (struct mempool *pool, size_t obj_size, size_t reserve)
 HIDDEN void *
 mempool_alloc (struct mempool *pool)
 {
-  intrmask_t saved_mask;
   struct object *obj;
 
-  lock_acquire (&pool->lock, saved_mask);
+  lock_acquire (&pool->lock);
   {
     if (pool->num_free <= pool->reserve)
       expand (pool);
@@ -167,18 +164,16 @@ mempool_alloc (struct mempool *pool)
     obj = pool->free_list;
     pool->free_list = obj->next;
   }
-  lock_release (&pool->lock, saved_mask);
+  lock_release (&pool->lock);
   return obj;
 }
 
 HIDDEN void
 mempool_free (struct mempool *pool, void *object)
 {
-  intrmask_t saved_mask;
-
-  lock_acquire (&pool->lock, saved_mask);
+  lock_acquire (&pool->lock);
   {
     free_object (pool, object);
   }
-  lock_release (&pool->lock, saved_mask);
+  lock_release (&pool->lock);
 }
