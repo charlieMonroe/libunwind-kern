@@ -35,11 +35,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #define UNW_OBJ(fn)	UNW_PASTE(UNW_PREFIX, fn)
 #define UNW_ARCH_OBJ(fn) UNW_PASTE(UNW_PASTE(UNW_PASTE(_U,UNW_TARGET),_), fn)
 
-#ifdef UNW_LOCAL_ONLY
 # define UNW_PREFIX	UNW_PASTE(UNW_PASTE(_UL,UNW_TARGET),_)
-#else /* !UNW_LOCAL_ONLY */
-# define UNW_PREFIX	UNW_PASTE(UNW_PASTE(_U,UNW_TARGET),_)
-#endif /* !UNW_LOCAL_ONLY */
 
 /* Error codes.  The unwind routines return the *negated* values of
    these error codes on error and a non-negative value on success.  */
