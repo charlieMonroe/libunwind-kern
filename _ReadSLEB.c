@@ -1,6 +1,9 @@
 #include "include/libunwind.h"
 
 unw_word_t
+_ReadSLEB (unsigned char **dpp);
+
+unw_word_t
 _ReadSLEB (unsigned char **dpp)
 {
   unsigned shift = 0;
