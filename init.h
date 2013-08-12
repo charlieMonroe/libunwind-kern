@@ -57,7 +57,7 @@ common_init (struct cursor *c, unsigned use_prev_instr)
 
   uprintf("registers saved \n");
   
-  uprintf("dwarf_getting RIP %p \n", c->dwarf.loc[RIP]);
+  uprintf("dwarf_getting RIP %lx \n", (long)c->dwarf.loc[RIP].val);
   ret = dwarf_get (&c->dwarf, c->dwarf.loc[RIP], &c->dwarf.ip);
   if (ret < 0)
     return ret;
