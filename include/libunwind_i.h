@@ -142,7 +142,7 @@ static inline void mark_as_used(void *v UNUSED) {
 #endif
 #define GET_MEMORY(mem, size, type)				    		    \
 do {									    \
-  mem = malloc(size, type, M_WAITOK)					\
+  mem = malloc(size, type, M_WAITOK);					\
 } while (0)
 
 #define unwi_find_dynamic_proc_info	UNWI_OBJ(find_dynamic_proc_info)
