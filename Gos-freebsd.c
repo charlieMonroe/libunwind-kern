@@ -193,7 +193,7 @@ x86_64_sigreturn (unw_cursor_t *cursor)
 
   Debug (8, "resuming at ip=%llx via sigreturn(%p)\n",
 	     (unsigned long long) c->dwarf.ip, uc);
-  sigreturn(uc);
-  panic("");
+//  sigreturn(uc);
+//  panic("");
 }
 #endif
