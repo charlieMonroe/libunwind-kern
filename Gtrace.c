@@ -141,7 +141,9 @@ trace_cache_expand (unw_trace_cache_t *cache)
   }
 
   Debug(5, "expanded cache from 2^%lu to 2^%lu buckets\n", cache->log_size, new_log_size);
-  munmap(cache->frames, old_size * sizeof(unw_tdep_frame_t));
+  //TODO
+  //  munmap(cache->frames, old_size * sizeof(unw_tdep_frame_t));
+
   cache->frames = new_frames;
   cache->log_size = new_log_size;
   cache->used = 0;
