@@ -75,30 +75,5 @@ elf_w (valid_object) (struct elf_image *ei)
 static inline int
 elf_map_image (struct elf_image *ei, const char *path)
 {
-  struct stat stat;
-  int fd;
-
-  fd = open (path, O_RDONLY);
-  if (fd < 0)
-    return -1;
-
-  if (fstat (fd, &stat) < 0)
-    {
-      close (fd);
-      return -1;
-    }
-
-  ei->size = stat.st_size;
-  ei->image = mmap (NULL, ei->size, PROT_READ, MAP_PRIVATE, fd, 0);
-  close (fd);
-  if (ei->image == MAP_FAILED)
-    return -1;
-
-  if (!elf_w (valid_object) (ei))
-  {
-    munmap(ei->image, ei->size);
-    return -1;
-  }
-
-  return 0;
+  return -1;
 }

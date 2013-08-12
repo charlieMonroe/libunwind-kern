@@ -26,12 +26,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "include/libunwind_i.h"
 
-#include <stdio.h>
 #include <sys/param.h>
-
-#ifdef HAVE_LZMA
-#include <lzma.h>
-#endif /* HAVE_LZMA */
 
 static Elf_W (Shdr)*
 elf_w (section_table) (struct elf_image *ei)
