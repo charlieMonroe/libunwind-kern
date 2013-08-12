@@ -311,7 +311,7 @@ typedef unsigned char unw_hash_index_t;
 
 struct dwarf_rs_cache
   {
-    pthread_mutex_t lock;
+    struct sx lock;
     unsigned short lru_head;	/* index of lead-recently used rs */
     unsigned short lru_tail;	/* index of most-recently used rs */
 
