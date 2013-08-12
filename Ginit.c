@@ -32,13 +32,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "unwind_i.h"
 
-#ifdef UNW_REMOTE_ONLY
-
-/* unw_local_addr_space is a NULL pointer in this case.  */
-PROTECTED unw_addr_space_t unw_local_addr_space;
-
-#else /* !UNW_REMOTE_ONLY */
-
 static struct unw_addr_space local_addr_space;
 
 PROTECTED unw_addr_space_t unw_local_addr_space = &local_addr_space;
@@ -268,5 +261,3 @@ x86_64_local_addr_space_init (void)
   memset (last_good_addr, 0, sizeof (unw_word_t) * NLGA);
   lga_victim = 0;
 }
-
-#endif /* !UNW_REMOTE_ONLY */
