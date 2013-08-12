@@ -35,8 +35,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 /* Platform-independent libunwind-internal declarations.  */
 
-#include <sys/types.h>	/* HP-UX needs this before include of pthread.h */
-
+#include <sys/types.h>
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/systm.h>
@@ -46,8 +45,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include <sys/kernel.h>
 #include <sys/malloc.h>
 #include <sys/osd.h>
-
 # include <sys/endian.h>
+
+#include "libunwind.h"
 
 #ifdef DEBUG
 # define UNW_DEBUG	1
