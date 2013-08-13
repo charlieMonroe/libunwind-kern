@@ -51,3 +51,4 @@ static moduledata_t libunwind_conf = {
 };
 
 DECLARE_MODULE(libunwind, libunwind_conf, SI_SUB_DRIVERS, SI_ORDER_MIDDLE);
+MODULE_VERSION(libunwind, 0);
