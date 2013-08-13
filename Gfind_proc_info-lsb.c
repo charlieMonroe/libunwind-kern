@@ -108,6 +108,8 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
   di->start_ip = pi->start_ip = (unw_word_t)values.value;
   di->end_ip = pi->end_ip = (unw_word_t)(values.value + values.size);
   di->gp = pi->gp = (unw_word_t)values.value;
+  
+  Debug(1, "callback: Returning %s (%p)\n", values.name, (void*)di->start_ip);
 
   return 1;
 }
