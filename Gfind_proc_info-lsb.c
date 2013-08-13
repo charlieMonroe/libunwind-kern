@@ -550,7 +550,7 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
 		      unw_proc_info_t *pi, int need_unwind_info, void *arg)
 {
   struct dwarf_callback_data cb_data;
-  //intrmask_t saved_mask;
+  intrmask_t saved_mask;
   int ret = 0;
 
   Debug (14, "looking for IP=0x%lx\n", (long) ip);
