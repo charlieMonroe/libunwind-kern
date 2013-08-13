@@ -112,6 +112,7 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
   linker_ddb_lookup("__kern_objc_personality_v0", &personality_symbol);
   pi->handler = (unw_word_t)personality_symbol;
   
+  Debug(1, "callback: personality at pointer (%p)\n", personality_symbol);
   Debug(1, "callback: Returning %s (%p)\n", values.name, (void*)di->start_ip);
 
   return 1;
