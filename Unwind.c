@@ -233,6 +233,8 @@ _Unwind_GetTextRelBase (struct _Unwind_Context *context)
 unsigned long __libunwind_Unwind_GetTextRelBase (struct _Unwind_Context *)
 ALIAS (_Unwind_GetTextRelBase);
 
+_Unwind_Personality_Fn __libunwind_default_personality;
+
 PROTECTED _Unwind_Reason_Code
 _Unwind_RaiseException (struct _Unwind_Exception *exception_object)
 {
@@ -269,6 +271,10 @@ _Unwind_RaiseException (struct _Unwind_Exception *exception_object)
       return _URC_FATAL_PHASE1_ERROR;
     
     personality = (_Unwind_Personality_Fn) (uintptr_t) pi.handler;
+    if (personality == NULL){
+      personality = __libunwind_default_personality;
+    }
+    
     if (personality)
     {
       reason = (*personality) (_U_VERSION, _UA_SEARCH_PHASE,
