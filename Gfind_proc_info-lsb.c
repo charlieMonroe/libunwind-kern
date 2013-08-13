@@ -26,9 +26,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 /* Locate an FDE via the ELF data-structures defined by LSB v1.3
    (http://www.linuxbase.org/spec/).  */
 
+#include <sys/param.h>
 #include <sys/stddef.h>
 #include <sys/limits.h>
-#include <sys/queue.h>
+#include <sys/kernel.h>
+#include <sys/systm.h>
 #include <sys/linker.h>
 
 #include "include/dwarf_i.h"
