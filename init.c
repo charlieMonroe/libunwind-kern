@@ -47,7 +47,7 @@ mi_init (void)
   const char *str = getenv ("UNW_DEBUG_LEVEL");
 
   if (str)
-    unwi_debug_level = atoi (str);
+    unwi_debug_level = 16; //atoi (str);
 
 #endif
 

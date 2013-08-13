@@ -60,8 +60,6 @@ trace_cache_free (void *arg)
   
   tls_cache_destroyed = 1;
   tls_cache = NULL;
-
-  Debug(5, "freed cache %p\n", cache);
 }
 
 /* Initialise frame tracing for threaded use. */

@@ -51,7 +51,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #ifdef DEBUG
 # define UNW_DEBUG	1
 #else
-# define UNW_DEBUG	0
+# define UNW_DEBUG	1
 #endif
 
 #define assert(cond)			\
@@ -60,12 +60,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #define abort() panic("")
 
 #if UNW_DEBUG
-#define unwi_debug_level		UNWI_ARCH_OBJ(debug_level)
-extern long unwi_debug_level;
+//#define unwi_debug_level		UNWI_ARCH_OBJ(debug_level)
+//extern long unwi_debug_level;
 
 # define Debug(level,format...)						\
 do {									\
-  if (unwi_debug_level >= level)					\
     {									\
       int _n = level;							\
       if (_n > 16)							\
