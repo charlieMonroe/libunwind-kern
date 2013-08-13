@@ -79,7 +79,7 @@ linear_search (unw_addr_space_t as, unw_word_t ip,
 /* ptr is a pointer to a dwarf_callback_data structure and, on entry,
    member ip contains the instruction-pointer we're looking
    for.  */
-HIDDEN int
+static int
 dwarf_callback (struct dwarf_callback_data *cb_data)
 {
   unw_dyn_info_t *di = &cb_data->di;

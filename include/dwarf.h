@@ -359,7 +359,6 @@ struct dwarf_callback_data
 
 /* Convenience macros: */
 #define dwarf_init			UNW_ARCH_OBJ (dwarf_init)
-#define dwarf_callback			UNW_OBJ (dwarf_callback)
 #define dwarf_find_proc_info		UNW_OBJ (dwarf_find_proc_info)
 #define dwarf_find_debug_frame		UNW_OBJ (dwarf_find_debug_frame)
 #define dwarf_search_unwind_table	UNW_OBJ (dwarf_search_unwind_table)
@@ -377,7 +376,6 @@ struct dwarf_callback_data
 
 extern int dwarf_init (void);
 #ifndef UNW_REMOTE_ONLY
-extern int dwarf_callback (struct dl_phdr_info *info, size_t size, void *ptr);
 extern int dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
 				 unw_proc_info_t *pi,
 				 int need_unwind_info, void *arg);
