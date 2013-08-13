@@ -28,6 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <sys/stddef.h>
 #include <sys/limits.h>
+#include <sys/link_elf.h>
 
 #include "include/dwarf_i.h"
 #include "include/dwarf-eh.h"
@@ -561,11 +562,9 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
   cb_data.di.format = -1;
   cb_data.di_debug.format = -1;
 
-  /* There is no dl_iterate_phdr in the kernel
   SIGPROCMASK (SIG_SETMASK, &unwi_full_mask, &saved_mask);
   ret = dl_iterate_phdr (dwarf_callback, &cb_data);
   SIGPROCMASK (SIG_SETMASK, &saved_mask, NULL);
-   */
 
   if (ret <= 0)
     {
