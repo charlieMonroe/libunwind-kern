@@ -19,4 +19,4 @@
 # OS X
 .DS_Store
 
-*.ko
+libunwind.ko
