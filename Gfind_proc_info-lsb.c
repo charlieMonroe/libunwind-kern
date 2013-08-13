@@ -89,7 +89,8 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
   unw_word_t ip = cb_data->ip;
 
   c_linker_sym_t function_symbol;
-  if (linker_ddb_search_symbol((caddr_t)ip, &function_symbol) != 0) {
+  long diff;
+  if (linker_ddb_search_symbol((caddr_t)ip, &function_symbol, &diff) != 0) {
     Debug(15, "Failed to find symbol at address %p\n", (void*)ip);
     return -1;
   }
@@ -101,10 +102,11 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
     return -1;
   }
   
-  pi->name_ptr = values.name;
-  di->start_ip = values.value;
-  di->end_ip = values.value + values.size;
-  di->gp = values.value;
+  
+  
+  di->start_ip = pi->start_ip = (unw_word_t)values.value;
+  di->end_ip = pi->end_ip = (unw_word_t)(values.value + values.size);
+  di->gp = pi->gp = (unw_word_t)values.value;
 
   return 1;
 }
