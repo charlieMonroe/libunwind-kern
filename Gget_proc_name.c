@@ -26,33 +26,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "include/libunwind_i.h"
 #include <sys/linker.h>
 
-struct proc_name_search_result {
-  caddr_t ip;
-  char *buf;
-  size_t buf_len;
-  long *offset;
-};
-
-static int linker_foreach(linker_file_t file, void *ctx) {
-  struct proc_name_search_result *result = (struct proc_name_search_result*)ctx;
-  if (linker_search_symbol_name(result->ip, result->buf, result->buf_len, result->offset) == 0){
-    // Found it -> return 1 so that the foreach stops
-    return 1;
-  }
-  return 0;
-}
-
 static inline int
 get_proc_name (unw_addr_space_t as, unw_word_t ip,
 	       char *buf, size_t buf_len, unw_word_t *offp, void *arg)
 {
-  struct proc_name_search_result result;
-  result.ip = (caddr_t)ip;
-  result.buf = buf;
-  result.buf_len = buf_len;
-  result.offset = offp;
-  
-  return linker_file_foreach(linker_foreach, &result);
+  return linker_search_symbol_name((caddr_t)ip, buf, buf_len, offp);
 }
 
 PROTECTED int
