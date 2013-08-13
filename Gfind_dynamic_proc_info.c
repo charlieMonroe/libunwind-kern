@@ -25,17 +25,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include "include/libunwind_i.h"
 
-#ifdef UNW_REMOTE_ONLY
-
-static inline int
-local_find_proc_info (unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
-		      int need_unwind_info, void *arg)
-{
-  return -UNW_ENOINFO;
-}
-
-#else /* !UNW_REMOTE_ONLY */
-
 static inline int
 local_find_proc_info (unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
 		      int need_unwind_info, void *arg)
@@ -57,35 +46,10 @@ local_find_proc_info (unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
   return -UNW_ENOINFO;
 }
 
-#endif /* !UNW_REMOTE_ONLY */
-
-#ifdef UNW_LOCAL_ONLY
-
-static inline int
-remote_find_proc_info (unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
-		       int need_unwind_info, void *arg)
-{
-  return -UNW_ENOINFO;
-}
-
-#else /* !UNW_LOCAL_ONLY */
-
-static inline int
-remote_find_proc_info (unw_addr_space_t as, unw_word_t ip, unw_proc_info_t *pi,
-		       int need_unwind_info, void *arg)
-{
-  return unwi_dyn_remote_find_proc_info (as, ip, pi, need_unwind_info, arg);
-}
-
-#endif /* !UNW_LOCAL_ONLY */
-
 HIDDEN int
 unwi_find_dynamic_proc_info (unw_addr_space_t as, unw_word_t ip,
 			     unw_proc_info_t *pi, int need_unwind_info,
 			     void *arg)
 {
-  if (as == unw_local_addr_space)
-    return local_find_proc_info (as, ip, pi, need_unwind_info, arg);
-  else
-    return remote_find_proc_info (as, ip, pi, need_unwind_info, arg);
+  return local_find_proc_info (as, ip, pi, need_unwind_info, arg);
 }
