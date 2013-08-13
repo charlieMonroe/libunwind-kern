@@ -28,7 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <sys/stddef.h>
 #include <sys/limits.h>
-#include <sys/link_elf.h>
+#include <sys/linker.h>
 
 #include "include/dwarf_i.h"
 #include "include/dwarf-eh.h"
