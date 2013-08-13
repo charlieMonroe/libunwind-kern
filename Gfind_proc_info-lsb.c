@@ -108,7 +108,7 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
   di->end_ip = pi->end_ip = (unw_word_t)(values.value + values.size);
   di->gp = pi->gp = (unw_word_t)values.value;
   
-  linker_symval_t personality_symbol = NULL;
+  c_linker_sym_t personality_symbol = NULL;
   linker_ddb_lookup("__kern_objc_personality_v0", &personality_symbol);
   pi->handler = personality_symbol;
   
