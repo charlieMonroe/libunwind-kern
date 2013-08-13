@@ -28,6 +28,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 #include <sys/stddef.h>
 #include <sys/limits.h>
+#include <sys/queue.h>
 #include <sys/linker.h>
 
 #include "include/dwarf_i.h"
