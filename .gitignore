@@ -18,3 +18,5 @@
 
 # OS X
 .DS_Store
+
+*.ko
