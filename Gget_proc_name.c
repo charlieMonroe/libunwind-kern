@@ -35,7 +35,7 @@ struct proc_name_search_result {
 
 static int linker_foreach(linker_file_t file, void *ctx) {
   struct proc_name_search_result *result = (struct proc_name_search_result*)ctx;
-  if (linker_search_symbol_name(ctx->ip, ctx->buf, ctx->buf_len, buf->offset) == 0){
+  if (linker_search_symbol_name(result->ip, result->buf, result->buf_len, result->offset) == 0){
     // Found it -> return 1 so that the foreach stops
     return 1;
   }
