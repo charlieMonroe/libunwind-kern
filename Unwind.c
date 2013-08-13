@@ -271,12 +271,12 @@ _Unwind_RaiseException (struct _Unwind_Exception *exception_object)
       return _URC_FATAL_PHASE1_ERROR;
     
     personality = (_Unwind_Personality_Fn) (uintptr_t) pi.handler;
+    Debug(1, "returned personality %p, default %p\n");
     if (personality == NULL){
       personality = __libunwind_default_personality;
     }
     
-    if (personality)
-    {
+    if (personality != NULL){
       reason = (*personality) (_U_VERSION, _UA_SEARCH_PHASE,
                                exception_class, exception_object,
                                &context);
