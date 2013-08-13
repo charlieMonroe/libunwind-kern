@@ -44,7 +44,7 @@ struct table_entry
     int32_t fde_offset;
   };
 
-
+/*
 static int
 linear_search (unw_addr_space_t as, unw_word_t ip,
 	       unw_word_t eh_frame_start, unw_word_t eh_frame_end,
@@ -77,6 +77,7 @@ linear_search (unw_addr_space_t as, unw_word_t ip,
     }
   return -UNW_ENOINFO;
 }
+ */
 
 /* ptr is a pointer to a dwarf_callback_data structure and, on entry,
    member ip contains the instruction-pointer we're looking
