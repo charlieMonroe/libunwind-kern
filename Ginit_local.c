@@ -36,14 +36,10 @@ unw_init_local (unw_cursor_t *cursor, ucontext_t *uc)
 {
   struct cursor *c = (struct cursor *) cursor;
 
-uprintf("initing local\n");
-
   if (unlikely (!tdep_init_done)){
     x86_64_local_addr_space_init();
     tdep_init ();
   }
-
-uprintf("done tdep init\n");
 
   Debug (1, "(cursor=%p)\n", c);
 

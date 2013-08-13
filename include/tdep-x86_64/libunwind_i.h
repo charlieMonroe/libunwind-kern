@@ -152,11 +152,9 @@ dwarf_get (struct dwarf_cursor *c, dwarf_loc_t loc, unw_word_t *val)
     return -UNW_EBADREG;
 
   if (DWARF_IS_REG_LOC (loc)){
-    uprintf("DWARF_IS_REG_LOC -> %p", (*c->as->acc.access_reg));
     return (*c->as->acc.access_reg) (c->as, DWARF_GET_LOC (loc), val,
 				     0, c->as_arg);
   }else{
-    uprintf("!DWARF_IS_REG_LOC -> %p", (*c->as->acc.access_mem));
     return (*c->as->acc.access_mem) (c->as, DWARF_GET_LOC (loc), val,
 				     0, c->as_arg);
   }

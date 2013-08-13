@@ -35,7 +35,6 @@ static inline int
 common_init (struct cursor *c, unsigned use_prev_instr)
 {
   int ret;
-  uprintf("common_init \n");
   
   c->dwarf.loc[RAX] = REG_INIT_LOC(c, rax, RAX);
   c->dwarf.loc[RDX] = REG_INIT_LOC(c, rdx, RDX);
@@ -55,9 +54,6 @@ common_init (struct cursor *c, unsigned use_prev_instr)
   c->dwarf.loc[R15] = REG_INIT_LOC(c, r15, R15);
   c->dwarf.loc[RIP] = REG_INIT_LOC(c, rip, RIP);
 
-  uprintf("registers saved \n");
-  
-  uprintf("dwarf_getting RIP %lx \n", (long)c->dwarf.loc[RIP].val);
   ret = dwarf_get (&c->dwarf, c->dwarf.loc[RIP], &c->dwarf.ip);
   if (ret < 0)
     return ret;
