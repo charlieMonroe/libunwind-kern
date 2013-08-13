@@ -33,6 +33,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include <sys/systm.h>
 #include <sys/linker.h>
 
+#include "unwind-internal.h"
 #include "include/dwarf_i.h"
 #include "include/dwarf-eh.h"
 #include "include/libunwind_i.h"
@@ -113,7 +114,7 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
                                                  struct _Unwind_Exception *exceptionObject,
                                                 struct _Unwind_Context *context);
   
-  di->handler = pi->handler = __kern_objc_personality_v0;
+  pi->handler = (uintptr_t)__kern_objc_personality_v0;
   
   Debug(1, "callback: Returning %s (%p)\n", values.name, (void*)di->start_ip);
 
