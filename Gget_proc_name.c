@@ -27,7 +27,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include <sys/linker.h>
 
 struct proc_name_search_result {
-  unw_word_t ip;
+  caddr_t ip;
   char *buf;
   size_t buf_len;
   long *offset;
@@ -47,12 +47,12 @@ get_proc_name (unw_addr_space_t as, unw_word_t ip,
 	       char *buf, size_t buf_len, unw_word_t *offp, void *arg)
 {
   struct proc_name_search_result result;
-  result.ip = ip;
+  result.ip = (caddr_t)ip;
   result.buf = buf;
   result.buf_len = buf_len;
   result.offset = offp;
   
-  return linker_file_foreach(linker_foreach, &proc_name_search_result);
+  return linker_file_foreach(linker_foreach, &result);
 }
 
 PROTECTED int
