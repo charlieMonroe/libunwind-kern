@@ -103,11 +103,17 @@ dwarf_callback (struct dwarf_callback_data *cb_data)
     return -1;
   }
   
-  
-  
   di->start_ip = pi->start_ip = (unw_word_t)values.value;
   di->end_ip = pi->end_ip = (unw_word_t)(values.value + values.size);
   di->gp = pi->gp = (unw_word_t)values.value;
+  
+  extern _Unwind_Reason_Code __kern_objc_personality_v0(int version,
+                                                 _Unwind_Action actions,
+                                                 uint64_t exceptionClass,
+                                                 struct _Unwind_Exception *exceptionObject,
+                                                struct _Unwind_Context *context);
+  
+  di->handler = pi->handler = __kern_objc_personality_v0;
   
   Debug(1, "callback: Returning %s (%p)\n", values.name, (void*)di->start_ip);
 

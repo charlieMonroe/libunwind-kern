@@ -284,6 +284,8 @@ _Unwind_RaiseException (struct _Unwind_Exception *exception_object)
           return _URC_FATAL_PHASE1_ERROR;
         }
 	    }
+    }else{
+      Debug(1, "no personality!\n");
     }
   }
   
