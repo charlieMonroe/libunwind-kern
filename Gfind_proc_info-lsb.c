@@ -96,6 +96,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   unw_word_t ip = cb_data->ip;
 
   int ret;
+  int found = 0;
   int need_unwind_info = cb_data->need_unwind_info;
   unw_accessors_t *a;
   
