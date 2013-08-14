@@ -65,10 +65,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 # define Debug(level,format...)						\
 do {									\
-    {									\
-      int _n = level;							\
-      if (_n < 0)							\
-	_n = 16;							\
+    if (level < 0){									\
+      int _n = 16;							\
       uprintf ("%*c>%s: ", _n, ' ', __FUNCTION__);		\
       uprintf (format);						\
     }									\
