@@ -66,8 +66,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define Debug(level,format...)						\
 do {									\
     if (level < 0){									\
-      int _n = 16;							\
-      uprintf ("%*c>%s: ", _n, ' ', __FUNCTION__);		\
+      uprintf (">%s: ", __FUNCTION__);		\
       uprintf (format);						\
     }									\
 } while (0)
