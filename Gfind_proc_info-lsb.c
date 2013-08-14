@@ -101,6 +101,8 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   int need_unwind_info = cb_data->need_unwind_info;
   unw_accessors_t *a;
   
+  pause("dwarf_callback", 100);
+  
   /* First, see if the function indeed comes from this file. */
   if (ip < (unw_word_t)file->address ||
       ip > (unw_word_t)(file->address + file->size)) {
@@ -128,11 +130,12 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   
   di->gp = 0;
   
-  struct dwarf_eh_frame_hdr **start, **stop;
+  struct dwarf_eh_frame_hdr **start = NULL;
+  struct dwarf_eh_frame_hdr **stop = NULL;
   if ((linker_file_lookup_set(file, ".eh_frame", &start, &stop, NULL) != 0)
-      && start != NULL) {
-    Debug(-1, "Failed to lookup the EH frame linker set in file %s\n",
-          file->filename);
+      || start == NULL) {
+    Debug(-1, "Failed to lookup the EH frame linker set in file %s (%p, %p)\n",
+          file->filename, start, stop);
     return 0;
   }
   
