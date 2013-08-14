@@ -105,6 +105,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   if (ip < (unw_word_t)file->address ||
       ip > (unw_word_t)(file->address + file->size)) {
     /* Try the next file */
+    Debug(1, "The function definitely isn't in file %s\n", file->filename);
     return 0;
   }
   
@@ -121,6 +122,9 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
                                                   (void*)function_symbol);
     return 0;
   }
+  
+  Debug(1, "Looking through file %s for function %s\n", file->filename,
+        values.name);
   
   di->gp = 0;
   
