@@ -93,6 +93,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   unw_word_t eh_frame_start;
   unw_word_t eh_frame_end;
   unw_word_t fde_count;
+  unw_word_t max_load_addr = (unw_word_t)file->address + file->size;
   unw_word_t ip = cb_data->ip;
 
   int ret;
@@ -185,9 +186,9 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
       found = 0;
   }else{
     di->format = UNW_INFO_FORMAT_REMOTE_TABLE;
-    di->start_ip = p_text->p_vaddr + load_base;
-    di->end_ip = p_text->p_vaddr + load_base + p_text->p_memsz;
-    di->u.rti.name_ptr = (unw_word_t) (uintptr_t) info->dlpi_name;
+    di->start_ip = (unw_word_t)values.value;
+    di->end_ip = (unw_word_t)values.value + values.size;
+    di->u.rti.name_ptr = (unw_word_t)values.name;
     di->u.rti.table_data = addr;
     assert (sizeof (struct table_entry) % sizeof (unw_word_t) == 0);
     di->u.rti.table_len = (fde_count * sizeof (struct table_entry)
