@@ -45,7 +45,7 @@ struct table_entry
     int32_t fde_offset;
   };
 
-/*
+
 static int
 linear_search (unw_addr_space_t as, unw_word_t ip,
 	       unw_word_t eh_frame_start, unw_word_t eh_frame_end,
@@ -78,44 +78,130 @@ linear_search (unw_addr_space_t as, unw_word_t ip,
     }
   return -UNW_ENOINFO;
 }
- */
+
 
 /* ptr is a pointer to a dwarf_callback_data structure and, on entry,
    member ip contains the instruction-pointer we're looking
    for.  */
 static int
-dwarf_callback (struct dwarf_callback_data *cb_data)
+dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
 {
   unw_dyn_info_t *di = &cb_data->di;
   unw_proc_info_t *pi = cb_data->pi;
+ 
+  unw_word_t addr;
+  unw_word_t eh_frame_start;
+  unw_word_t eh_frame_end;
+  unw_word_t fde_count;
   unw_word_t ip = cb_data->ip;
 
+  int ret;
+  int need_unwind_info = cb_data->need_unwind_info;
+  unw_accessors_t *a;
+  
+  /* First, see if the function indeed comes from this file. */
+  if (ip < file->address || ip > (file->address + file->size)) {
+    /* Try the next file */
+    return 0;
+  }
+  
   c_linker_sym_t function_symbol;
   long diff;
   if (linker_ddb_search_symbol((caddr_t)ip, &function_symbol, &diff) != 0) {
     Debug(15, "Failed to find symbol at address %p\n", (void*)ip);
-    return -1;
+    return 0;
   }
   
   linker_symval_t values;
   if (linker_ddb_symbol_values(function_symbol, &values) != 0){
     Debug(15, "Failed to retrieve symbol values [ip=%p;fsym=%p]\n", (void*)ip,
                                                   (void*)function_symbol);
-    return -1;
+    return 0;
   }
   
-  di->start_ip = pi->start_ip = (unw_word_t)values.value;
-  di->end_ip = pi->end_ip = (unw_word_t)(values.value + values.size);
-  di->gp = pi->gp = (unw_word_t)values.value;
+  di->gp = 0;
   
-  c_linker_sym_t personality_symbol = NULL;
-  linker_ddb_lookup("__kern_objc_personality_v0", &personality_symbol);
-  pi->handler = (unw_word_t)personality_symbol;
+  struct dwarf_eh_frame_hdr **start, **stop;
+  if ((linker_file_lookup_set(file, ".eh_frame", &start, &stop, NULL) != 0)
+      && start != NULL) {
+    Debug(15, "Failed to lookup the EH frame linker set in file %p\n",
+          file->filename);
+    return 0;
+  }
   
-  Debug(1, "callback: personality at pointer (%p)\n", personality_symbol);
-  Debug(1, "callback: Returning %s (%p)\n", values.name, (void*)di->start_ip);
-
-  return 1;
+  pi->gp = di->gp;
+  struct dwarf_eh_frame_hdr *hdr = *start;
+  
+  if (hdr->version != DW_EH_VERSION) {
+    Debug (1, "table `%s' has unexpected version %d\n",
+           info->dlpi_name, hdr->version);
+    return 0;
+  }
+  
+  a = unw_get_accessors (unw_local_addr_space);
+  addr = (unw_word_t) (uintptr_t) (hdr + 1);
+  
+  /* (Optionally) read eh_frame_ptr: */
+  if ((ret = dwarf_read_encoded_pointer (unw_local_addr_space, a,
+                                         &addr, hdr->eh_frame_ptr_enc, pi,
+                                         &eh_frame_start, NULL)) < 0)
+    return 0;
+  
+  /* (Optionally) read fde_count: */
+  if ((ret = dwarf_read_encoded_pointer (unw_local_addr_space, a,
+                                         &addr, hdr->fde_count_enc, pi,
+                                         &fde_count, NULL)) < 0)
+    return 0;
+  
+  if (hdr->table_enc != (DW_EH_PE_datarel | DW_EH_PE_sdata4)){
+    /* If there is no search table or it has an unsupported
+     encoding, fall back on linear search.  */
+    if (hdr->table_enc == DW_EH_PE_omit)
+      Debug (4, "table `%s' lacks search table; doing linear search\n",
+             info->dlpi_name);
+    else
+      Debug (4, "table `%s' has encoding 0x%x; doing linear search\n",
+             info->dlpi_name, hdr->table_enc);
+    
+    eh_frame_end = max_load_addr;	/* XXX can we do better? */
+    
+    if (hdr->fde_count_enc == DW_EH_PE_omit)
+      fde_count = ~0UL;
+    if (hdr->eh_frame_ptr_enc == DW_EH_PE_omit){
+      //abort () TODO;
+      Debug(1, "Should be aborting here!\n");
+    }
+    
+    
+    /* XXX we know how to build a local binary search table for
+     .debug_frame, so we could do that here too.  */
+    cb_data->single_fde = 1;
+    found = linear_search (unw_local_addr_space, ip,
+                           eh_frame_start, eh_frame_end, fde_count,
+                           pi, need_unwind_info, NULL);
+    if (found != 1)
+      found = 0;
+  }else{
+    di->format = UNW_INFO_FORMAT_REMOTE_TABLE;
+    di->start_ip = p_text->p_vaddr + load_base;
+    di->end_ip = p_text->p_vaddr + load_base + p_text->p_memsz;
+    di->u.rti.name_ptr = (unw_word_t) (uintptr_t) info->dlpi_name;
+    di->u.rti.table_data = addr;
+    assert (sizeof (struct table_entry) % sizeof (unw_word_t) == 0);
+    di->u.rti.table_len = (fde_count * sizeof (struct table_entry)
+                           / sizeof (unw_word_t));
+    /* For the binary-search table in the eh_frame_hdr, data-relative
+     means relative to the start of that section... */
+    di->u.rti.segbase = (unw_word_t) (uintptr_t) hdr;
+    
+    found = 1;
+    Debug (15, "found table `%s': segbase=0x%lx, len=%lu, gp=0x%lx, "
+           "table_data=0x%lx\n", (char *) (uintptr_t) di->u.rti.name_ptr,
+           (long) di->u.rti.segbase, (long) di->u.rti.table_len,
+           (long) di->gp, (long) di->u.rti.table_data);
+  }
+  
+  return found;
 }
 
 HIDDEN int
@@ -136,10 +222,10 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
   cb_data.di_debug.format = -1;
 
   SIGPROCMASK (SIG_SETMASK, &unwi_full_mask, &saved_mask);
-  ret = dwarf_callback(&cb_data);
+  ret = linker_file_foreach((linker_predicate_t *)dwarf_callback, &cb_data);
   SIGPROCMASK (SIG_SETMASK, &saved_mask, NULL);
 
-  if (ret <= 0)
+  if (ret > 0)
     {
       Debug (14, "IP=0x%lx not found\n", (long) ip);
       return -UNW_ENOINFO;
