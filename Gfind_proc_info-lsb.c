@@ -105,14 +105,14 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   if (ip < (unw_word_t)file->address ||
       ip > (unw_word_t)(file->address + file->size)) {
     /* Try the next file */
-    Debug(1, "The function definitely isn't in file %s\n", file->filename);
+    Debug(-1, "The function definitely isn't in file %s\n", file->filename);
     return 0;
   }
   
   c_linker_sym_t function_symbol;
   long diff;
   if (linker_ddb_search_symbol((caddr_t)ip, &function_symbol, &diff) != 0) {
-    Debug(15, "Failed to find symbol at address %p\n", (void*)ip);
+    Debug(-1, "Failed to find symbol at address %p\n", (void*)ip);
     return 0;
   }
   
@@ -123,7 +123,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
     return 0;
   }
   
-  Debug(1, "Looking through file %s for function %s\n", file->filename,
+  Debug(-1, "Looking through file %s for function %s\n", file->filename,
         values.name);
   
   di->gp = 0;
@@ -131,7 +131,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   struct dwarf_eh_frame_hdr **start, **stop;
   if ((linker_file_lookup_set(file, ".eh_frame", &start, &stop, NULL) != 0)
       && start != NULL) {
-    Debug(15, "Failed to lookup the EH frame linker set in file %s\n",
+    Debug(-1, "Failed to lookup the EH frame linker set in file %s\n",
           file->filename);
     return 0;
   }
@@ -140,7 +140,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   struct dwarf_eh_frame_hdr *hdr = *start;
   
   if (hdr->version != DW_EH_VERSION) {
-    Debug (1, "table `%s' has unexpected version %d\n",
+    Debug (-1, "table `%s' has unexpected version %d\n",
            file->filename, hdr->version);
     return 0;
   }
@@ -164,10 +164,10 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
     /* If there is no search table or it has an unsupported
      encoding, fall back on linear search.  */
     if (hdr->table_enc == DW_EH_PE_omit)
-      Debug (4, "table `%s' lacks search table; doing linear search\n",
+      Debug (-1, "table `%s' lacks search table; doing linear search\n",
              file->filename);
     else
-      Debug (4, "table `%s' has encoding 0x%x; doing linear search\n",
+      Debug (-1, "table `%s' has encoding 0x%x; doing linear search\n",
              file->filename, hdr->table_enc);
     
     eh_frame_end = max_load_addr;	/* XXX can we do better? */
@@ -176,7 +176,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
       fde_count = ~0UL;
     if (hdr->eh_frame_ptr_enc == DW_EH_PE_omit){
       //abort () TODO;
-      Debug(1, "Should be aborting here!\n");
+      Debug(-1, "Should be aborting here!\n");
     }
     
     
@@ -202,7 +202,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
     di->u.rti.segbase = (unw_word_t) (uintptr_t) hdr;
     
     found = 1;
-    Debug (15, "found table `%s': segbase=0x%lx, len=%lu, gp=0x%lx, "
+    Debug (-1, "found table `%s': segbase=0x%lx, len=%lu, gp=0x%lx, "
            "table_data=0x%lx\n", (char *) (uintptr_t) di->u.rti.name_ptr,
            (long) di->u.rti.segbase, (long) di->u.rti.table_len,
            (long) di->gp, (long) di->u.rti.table_data);

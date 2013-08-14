@@ -67,7 +67,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 do {									\
     {									\
       int _n = level;							\
-      if (_n > 16)							\
+      if (_n < 0)							\
 	_n = 16;							\
       uprintf ("%*c>%s: ", _n, ' ', __FUNCTION__);		\
       uprintf (format);						\
