@@ -127,7 +127,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   struct dwarf_eh_frame_hdr **start, **stop;
   if ((linker_file_lookup_set(file, ".eh_frame", &start, &stop, NULL) != 0)
       && start != NULL) {
-    Debug(15, "Failed to lookup the EH frame linker set in file %p\n",
+    Debug(15, "Failed to lookup the EH frame linker set in file %s\n",
           file->filename);
     return 0;
   }
