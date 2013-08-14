@@ -101,7 +101,8 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   unw_accessors_t *a;
   
   /* First, see if the function indeed comes from this file. */
-  if (ip < file->address || ip > (file->address + file->size)) {
+  if (ip < (unw_word_t)file->address ||
+      ip > (unw_word_t)(file->address + file->size)) {
     /* Try the next file */
     return 0;
   }
@@ -135,7 +136,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   
   if (hdr->version != DW_EH_VERSION) {
     Debug (1, "table `%s' has unexpected version %d\n",
-           info->dlpi_name, hdr->version);
+           file->filename, hdr->version);
     return 0;
   }
   
@@ -159,10 +160,10 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
      encoding, fall back on linear search.  */
     if (hdr->table_enc == DW_EH_PE_omit)
       Debug (4, "table `%s' lacks search table; doing linear search\n",
-             info->dlpi_name);
+             file->filename);
     else
       Debug (4, "table `%s' has encoding 0x%x; doing linear search\n",
-             info->dlpi_name, hdr->table_enc);
+             file->filename, hdr->table_enc);
     
     eh_frame_end = max_load_addr;	/* XXX can we do better? */
     
