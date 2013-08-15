@@ -223,7 +223,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   int found = 0;
   int need_unwind_info = cb_data->need_unwind_info;
   
-  pause("dwarf_callback", 1000);
+  pause("dwarf_callback", 100);
   
   /* First, see if the function indeed comes from this file. */
   if (ip < (unw_word_t)file->address ||
