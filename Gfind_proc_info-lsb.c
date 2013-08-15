@@ -32,10 +32,17 @@
 #include <sys/kernel.h>
 #include <sys/systm.h>
 #include <sys/linker.h>
-#include <sys/namei.h>
-#include <sys/fcntl.h>
-#include <sys/vnode.h>
 #include <sys/malloc.h>
+
+#include <machine/elf.h>
+#include <vm/vm.h>
+#include <vm/vm_param.h>
+#include <vm/vm_object.h>
+#include <vm/vm_kern.h>
+#include <vm/vm_extern.h>
+#include <vm/pmap.h>
+#include <vm/vm_map.h>
+
 
 #include "unwind-internal.h"
 #include "include/dwarf_i.h"
@@ -48,6 +55,59 @@ struct table_entry
   int32_t start_ip_offset;
   int32_t fde_offset;
 };
+
+typedef struct {
+	void		*addr;
+	Elf_Off		size;
+	int		flags;
+	int		sec;	/* Original section */
+	char		*name;
+} Elf_progent;
+
+typedef struct {
+	Elf_Rel		*rel;
+	int		nrel;
+	int		sec;
+} Elf_relent;
+
+typedef struct {
+	Elf_Rela	*rela;
+	int		nrela;
+	int		sec;
+} Elf_relaent;
+
+typedef struct elf_file {
+	struct linker_file lf;		/* Common fields */
+  
+	int		preloaded;
+	caddr_t		address;	/* Relocation address */
+	vm_object_t	object;		/* VM object to hold file pages */
+	Elf_Shdr	*e_shdr;
+  
+	Elf_progent	*progtab;
+	int		nprogtab;
+  
+	Elf_relaent	*relatab;
+	int		nrelatab;
+  
+	Elf_relent	*reltab;
+	int		nreltab;
+  
+	Elf_Sym		*ddbsymtab;	/* The symbol table we are using */
+	long		ddbsymcnt;	/* Number of symbols */
+	caddr_t		ddbstrtab;	/* String table */
+	long		ddbstrcnt;	/* number of bytes in string table */
+  
+	caddr_t		shstrtab;	/* Section name string table */
+	long		shstrcnt;	/* number of bytes in string table */
+  
+	caddr_t		ctftab;		/* CTF table */
+	long		ctfcnt;		/* number of bytes in CTF table */
+	caddr_t		ctfoff;		/* CTF offset table */
+	caddr_t		typoff;		/* Type offset table */
+	long		typlen;		/* Number of type entries. */
+  
+} *elf_file_t;
 
 MALLOC_DECLARE(M_LIBUNWIND_FILE);
 MALLOC_DEFINE(M_LIBUNWIND_FILE, "file", "file");
@@ -116,65 +176,33 @@ strings_equal(const char *str1, const char *str2)
   return 0;
 }
 
-static size_t get_offset_of_section_named(caddr_t firstpage, const char *section_name){
-  Elf_Ehdr *ehdr = (Elf_Ehdr *)firstpage;
-  
-  int offset = (ehdr->e_shstrndx * ehdr->e_shentsize) + ehdr->e_shoff;
-  Elf_Shdr *sh_strtab = (Elf_Shdr*)(firstpage + offset);
-  const char *const sh_strtab_p = firstpage + sh_strtab->sh_offset;
-  
-  Elf_Shdr *shdr = (Elf_Shdr *) (firstpage + ehdr->e_shoff);
-  Elf_Shdr *shlimit = shdr + ehdr->e_shnum;
-  while (shdr < shlimit) {
-    const char *name = sh_strtab_p + shdr->sh_name;
-    if (strings_equal(name, section_name) == 1){
-      // This is the section we're looking for
-      return shdr->sh_offset;
-    }
-    
-    ++shdr;
-  }
-  return 0;
-}
-
 static caddr_t find_eh_frame_section(linker_file_t file){
+  /* It is a bad idea to try to look into the kernel file. 
+   * Actually it would probably be a good idea to check that the
+   * file ends with .ko, since those files actually get to be loaded
+   * the way we need (elf_link_obj vs elf_link).
+   */
+  if (strings_equal("kernel", file->filename)){
+    return NULL;
+  }
+  
+  elf_file_t efile = (elf_file_t)file;
+  Elf_progent *eh_frame_progent = NULL;
+  Elf_progent *progent = NULL;
+  for (int i = 0; i < efile->nprogtab; ++i) {
+    progent = &efile->progtab[i];
+    
+    if (objc_strings_equal(progent->name, ".eh_frame")){
+      eh_frame_progent = progent;
+      break;
+    }
+	}
+  
+  if (eh_frame_progent != NULL){
+    Debug(-1, "Returning pointer to .eh_frame section %p\n", eh_frame_progent->addr);
+    return eh_frame_progent->addr;
+  }
   return NULL;
-  int flags;
-  int error = 0;
-  ssize_t resid;
-  
-  int readsize = 250000;
-  
-  struct nameidata nd;
-  NDINIT(&nd, LOOKUP, FOLLOW, UIO_SYSSPACE, file->pathname, curthread);
-  flags = FREAD;
-  error = vn_open(&nd, &flags, 0, NULL);
-  if (error != 0) {
-    Debug(-1, "Failed to open file (%s)!\n", file->pathname);
-    return NULL;
-  }
-  
-  NDFREE(&nd, NDF_ONLY_PNBUF);
-  if (nd.ni_vp->v_type != VREG) {
-    Debug(-1, "Wrong v_type (%s)!\n", file->pathname);
-    return NULL;
-  }
-  
-  caddr_t firstpage = malloc(readsize, M_LIBUNWIND_FILE, M_WAITOK);
-  error = vn_rdwr(UIO_READ, nd.ni_vp, firstpage, readsize, 0,
-                  UIO_SYSSPACE, IO_NODELOCKED, curthread->td_ucred, NOCRED,
-                  &resid, curthread);
-  
-  size_t offset = get_offset_of_section_named(firstpage, ".eh_frame");
-  
-  VOP_UNLOCK(nd.ni_vp, 0);
-  vn_close(nd.ni_vp, FREAD, curthread->td_ucred, curthread);
-  
-  if (offset == 0){
-    return NULL;
-  }
-  Debug(-1, "Returning pointer to .eh_frame section %p\n", file->address + offset);
-  return file->address + offset;
 }
 
 
