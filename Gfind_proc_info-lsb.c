@@ -253,6 +253,11 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   pi->gp = di->gp = 0;
   
   Elf_progent *section = find_eh_frame_section(file);
+  if (section == NULL){
+    /* No section found. */
+    return 0;
+  }
+  
   eh_frame_start = (unw_word_t)section->addr;
   eh_frame_end = (unw_word_t)((char*)section->addr + section->size);
   fde_count = ~0UL;
