@@ -192,7 +192,7 @@ static caddr_t find_eh_frame_section(linker_file_t file){
   for (int i = 0; i < efile->nprogtab; ++i) {
     progent = &efile->progtab[i];
     
-    if (objc_strings_equal(progent->name, ".eh_frame")){
+    if (strings_equal(progent->name, ".eh_frame")){
       eh_frame_progent = progent;
       break;
     }
