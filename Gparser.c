@@ -437,7 +437,8 @@ fetch_proc_info (struct dwarf_cursor *c, unw_word_t ip, int need_unwind_info)
     tdep_fetch_frame (c, ip, need_unwind_info);
 
   /* Update use_prev_instr for the next frame. */
-  if (need_unwind_info)
+  // TODO rmeove && c->pi.unwind_info
+  if (need_unwind_info && c->pi.unwind_info)
   {
     assert(c->pi.unwind_info);
     struct dwarf_cie_info *dci = c->pi.unwind_info;
