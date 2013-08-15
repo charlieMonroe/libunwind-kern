@@ -32,6 +32,10 @@
 #include <sys/kernel.h>
 #include <sys/systm.h>
 #include <sys/linker.h>
+#include <sys/namei.h>
+#include <sys/fcntl.h>
+#include <sys/vnode.h>
+#include <sys/malloc.h>
 
 #include "unwind-internal.h"
 #include "include/dwarf_i.h"
