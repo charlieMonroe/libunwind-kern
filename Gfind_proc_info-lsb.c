@@ -138,6 +138,7 @@ static size_t get_offset_of_section_named(caddr_t firstpage, const char *section
 }
 
 static caddr_t find_eh_frame_section(linker_file_t file){
+  return NULL;
   int flags;
   int error = 0;
   ssize_t resid;
