@@ -45,6 +45,8 @@ struct table_entry
   int32_t fde_offset;
 };
 
+MALLOC_DECLARE(M_LIBUNWIND_FILE);
+MALLOC_DEFINE(M_LIBUNWIND_FILE, "file", "file");
 
 static int
 linear_search (unw_addr_space_t as, unw_word_t ip,
@@ -153,7 +155,7 @@ static caddr_t find_eh_frame_section(linker_file_t file){
     return;
   }
   
-  caddr_t firstpage = malloc(readsize, M_LIBUNWIND_FAKE, M_WAITOK);
+  caddr_t firstpage = malloc(readsize, M_LIBUNWIND_FILE, M_WAITOK);
   error = vn_rdwr(UIO_READ, nd.ni_vp, firstpage, readsize, 0,
                   UIO_SYSSPACE, IO_NODELOCKED, curthread->td_ucred, NOCRED,
                   &resid, curthread);
