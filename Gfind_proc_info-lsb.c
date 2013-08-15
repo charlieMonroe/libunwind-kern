@@ -176,7 +176,7 @@ strings_equal(const char *str1, const char *str2)
   return 0;
 }
 
-static caddr_t find_eh_frame_section(linker_file_t file){
+static Elf_progent *find_eh_frame_section(linker_file_t file){
   /* It is a bad idea to try to look into the kernel file. 
    * Actually it would probably be a good idea to check that the
    * file ends with .ko, since those files actually get to be loaded
@@ -200,7 +200,7 @@ static caddr_t find_eh_frame_section(linker_file_t file){
   
   if (eh_frame_progent != NULL){
     Debug(-1, "Returning pointer to .eh_frame section %p\n", eh_frame_progent->addr);
-    return eh_frame_progent->addr;
+    return eh_frame_progent;
   }
   return NULL;
 }
@@ -254,85 +254,18 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   Debug(-1, "Looking through file %s for function %s\n", file->filename,
         values.name);
   
-  di->gp = 0;
+  pi->gp = di->gp = 0;
   
-  struct dwarf_eh_frame_hdr *hdr = (struct dwarf_eh_frame_hdr*)find_eh_frame_section(file);
-  if (hdr == NULL) {
-    Debug(-1, "Failed to lookup the EH frame linker set in file %s\n",
-          file->filename);
-    return 0;
-  }
-  
-  pi->gp = di->gp;
-  
-  if (hdr->version != DW_EH_VERSION) {
-    Debug (-1, "table `%s' has unexpected version %d\n",
-           file->filename, hdr->version);
-    return 0;
-  }
-  
-  a = unw_get_accessors (unw_local_addr_space);
-  addr = (unw_word_t) (uintptr_t) (hdr + 1);
-  
-  /* (Optionally) read eh_frame_ptr: */
-  if ((ret = dwarf_read_encoded_pointer (unw_local_addr_space, a,
-                                         &addr, hdr->eh_frame_ptr_enc, pi,
-                                         &eh_frame_start, NULL)) < 0)
-    return 0;
-  
-  /* (Optionally) read fde_count: */
-  if ((ret = dwarf_read_encoded_pointer (unw_local_addr_space, a,
-                                         &addr, hdr->fde_count_enc, pi,
-                                         &fde_count, NULL)) < 0)
-    return 0;
-  
-  if (hdr->table_enc != (DW_EH_PE_datarel | DW_EH_PE_sdata4)){
-    /* If there is no search table or it has an unsupported
-     encoding, fall back on linear search.  */
-    if (hdr->table_enc == DW_EH_PE_omit)
-      Debug (-1, "table `%s' lacks search table; doing linear search\n",
-             file->filename);
-    else
-      Debug (-1, "table `%s' has encoding 0x%x; doing linear search\n",
-             file->filename, hdr->table_enc);
+  Elf_progent *section = find_eh_frame_section(file);
+  eh_frame_start = (unw_word_t)section->addr;
+  eh_frame_end = (unw_word_t)(section->addr + section->size);
+  fde_count = ~0UL;
     
-    eh_frame_end = max_load_addr;	/* XXX can we do better? */
-    
-    if (hdr->fde_count_enc == DW_EH_PE_omit)
-      fde_count = ~0UL;
-    if (hdr->eh_frame_ptr_enc == DW_EH_PE_omit){
-      //abort () TODO;
-      Debug(-1, "Should be aborting here!\n");
-    }
-    
-    
-    /* XXX we know how to build a local binary search table for
-     .debug_frame, so we could do that here too.  */
-    cb_data->single_fde = 1;
-    found = linear_search (unw_local_addr_space, ip,
-                           eh_frame_start, eh_frame_end, fde_count,
-                           pi, need_unwind_info, NULL);
-    if (found != 1)
-      found = 0;
-  }else{
-    di->format = UNW_INFO_FORMAT_REMOTE_TABLE;
-    di->start_ip = (unw_word_t)values.value;
-    di->end_ip = (unw_word_t)values.value + values.size;
-    di->u.rti.name_ptr = (unw_word_t)values.name;
-    di->u.rti.table_data = addr;
-    assert (sizeof (struct table_entry) % sizeof (unw_word_t) == 0);
-    di->u.rti.table_len = (fde_count * sizeof (struct table_entry)
-                           / sizeof (unw_word_t));
-    /* For the binary-search table in the eh_frame_hdr, data-relative
-     means relative to the start of that section... */
-    di->u.rti.segbase = (unw_word_t) (uintptr_t) hdr;
-    
-    found = 1;
-    Debug (-1, "found table `%s': segbase=0x%lx, len=%lu, gp=0x%lx, "
-           "table_data=0x%lx\n", (char *) (uintptr_t) di->u.rti.name_ptr,
-           (long) di->u.rti.segbase, (long) di->u.rti.table_len,
-           (long) di->gp, (long) di->u.rti.table_data);
-  }
+  cb_data->single_fde = 1;
+  found = linear_search (unw_local_addr_space, ip,
+                         eh_frame_start, eh_frame_end, fde_count,
+                         pi, need_unwind_info, NULL);
+  Debug(-1, "Linear search returned %i\n", found);
   
   return found;
 }
