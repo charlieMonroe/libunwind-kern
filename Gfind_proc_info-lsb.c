@@ -101,7 +101,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   int need_unwind_info = cb_data->need_unwind_info;
   unw_accessors_t *a;
   
-  pause("dwarf_callback", 100);
+//  pause("dwarf_callback", 100);
   
   /* First, see if the function indeed comes from this file. */
   if (ip < (unw_word_t)file->address ||
