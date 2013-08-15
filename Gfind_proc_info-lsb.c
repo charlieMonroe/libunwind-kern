@@ -267,7 +267,10 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
                          eh_frame_start, eh_frame_end, fde_count,
                          pi, need_unwind_info, NULL);
   Debug(-1, "Linear search returned %i\n", found);
-  
+	if (found != 1){
+		return 0;
+	}
+	
   return found;
 }
 
