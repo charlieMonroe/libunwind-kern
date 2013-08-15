@@ -353,7 +353,7 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
 }
 
 static inline const struct table_entry *
-lookup (const struct table_entry *table, size_t table_size, int32_t rel_ip)
+unw_lookup (const struct table_entry *table, size_t table_size, int32_t rel_ip)
 {
   unsigned long table_len = table_size / sizeof (struct table_entry);
   const struct table_entry *e = NULL;
@@ -428,7 +428,7 @@ dwarf_search_unwind_table (unw_addr_space_t as, unw_word_t ip,
   if (as == unw_local_addr_space)
   {
     segbase = di->u.rti.segbase;
-    e = lookup (table, table_len, ip - segbase);
+    e = unw_lookup (table, table_len, ip - segbase);
   }
   else
 #endif
