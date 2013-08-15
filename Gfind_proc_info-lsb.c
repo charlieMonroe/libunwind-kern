@@ -215,19 +215,15 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   unw_dyn_info_t *di = &cb_data->di;
   unw_proc_info_t *pi = cb_data->pi;
   
-  unw_word_t addr;
   unw_word_t eh_frame_start;
   unw_word_t eh_frame_end;
   unw_word_t fde_count;
-  unw_word_t max_load_addr = (unw_word_t)file->address + file->size;
   unw_word_t ip = cb_data->ip;
   
-  int ret;
   int found = 0;
   int need_unwind_info = cb_data->need_unwind_info;
-  unw_accessors_t *a;
   
-//  pause("dwarf_callback", 100);
+  pause("dwarf_callback", 1000);
   
   /* First, see if the function indeed comes from this file. */
   if (ip < (unw_word_t)file->address ||
@@ -258,7 +254,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   
   Elf_progent *section = find_eh_frame_section(file);
   eh_frame_start = (unw_word_t)section->addr;
-  eh_frame_end = (unw_word_t)(section->addr + section->size);
+  eh_frame_end = (unw_word_t)((char*)section->addr + section->size);
   fde_count = ~0UL;
     
   cb_data->single_fde = 1;
