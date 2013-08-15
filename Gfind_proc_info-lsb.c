@@ -150,13 +150,13 @@ static caddr_t find_eh_frame_section(linker_file_t file){
   error = vn_open(&nd, &flags, 0, NULL);
   if (error != 0) {
     Debug(-1, "Failed to open file (%s)!\n", file->pathname);
-    return;
+    return NULL;
   }
   
   NDFREE(&nd, NDF_ONLY_PNBUF);
   if (nd.ni_vp->v_type != VREG) {
     Debug(-1, "Wrong v_type (%s)!\n", file->pathname);
-    return;
+    return NULL;
   }
   
   caddr_t firstpage = malloc(readsize, M_LIBUNWIND_FILE, M_WAITOK);
