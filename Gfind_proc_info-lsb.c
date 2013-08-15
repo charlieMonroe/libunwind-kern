@@ -149,13 +149,13 @@ static caddr_t find_eh_frame_section(linker_file_t file){
   flags = FREAD;
   error = vn_open(&nd, &flags, 0, NULL);
   if (error != 0) {
-    objc_log("Failed to open file (%s)!\n", file->pathname);
+    Debug(-1, "Failed to open file (%s)!\n", file->pathname);
     return;
   }
   
   NDFREE(&nd, NDF_ONLY_PNBUF);
   if (nd.ni_vp->v_type != VREG) {
-    objc_log("Wrong v_type (%s)!\n", file->pathname);
+    Debug(-1, "Wrong v_type (%s)!\n", file->pathname);
     return;
   }
   
@@ -172,7 +172,7 @@ static caddr_t find_eh_frame_section(linker_file_t file){
   if (offset == 0){
     return NULL;
   }
-  Debug(1, "Returning pointer to .eh_frame section %p\n", file->address + offset);
+  Debug(-1, "Returning pointer to .eh_frame section %p\n", file->address + offset);
   return file->address + offset;
 }
 
