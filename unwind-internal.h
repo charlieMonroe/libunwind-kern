@@ -65,6 +65,8 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
   unw_word_t ip;
   int ret;
 
+  Debug(-1, "Phase 2 entered.\n");
+  
   actions = _UA_CLEANUP_PHASE;
   if (stop)
     actions |= _UA_FORCE_UNWIND;
@@ -112,6 +114,7 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
 		actions |= _UA_HANDLER_FRAME;
 	    }
 
+    Debug(-1, "Phase 2 calling personality.\n");
 	  reason = (*personality) (_U_VERSION, actions, exception_class,
 				   exception_object, context);
 	  if (reason != _URC_CONTINUE_UNWIND)

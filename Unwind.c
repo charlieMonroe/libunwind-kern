@@ -300,7 +300,7 @@ _Unwind_RaiseException (struct _Unwind_Exception *exception_object)
   exception_object->private_1 = 0;	/* clear "stop" pointer */
   exception_object->private_2 = ip;	/* save frame marker */
   
-  Debug (1, "found handler for IP=%lx; entering cleanup phase\n", (long) ip);
+  Debug (-1, "found handler for IP=%lx; entering cleanup phase\n", (long) ip);
   
   /* Reset the cursor to the first frame: */
   if (unw_init_local (&context.cursor, &uc) < 0)
