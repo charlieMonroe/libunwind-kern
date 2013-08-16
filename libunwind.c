@@ -1,7 +1,9 @@
 #include <sys/param.h>
 #include <sys/module.h>
 #include <sys/kernel.h>
+#include <sys/types.h>
 #include <sys/systm.h>
+
 
 #include "include/libunwind.h"
 
