@@ -248,7 +248,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   }
   
   Debug(-1, "Looking through file %s for function %s[start=%p;ip=%p]\n", file->filename,
-        values.name, values.addr, (void*)ip);
+        values.name, values.value, (void*)ip);
   
   pi->gp = di->gp = 0;
   
@@ -263,8 +263,8 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   fde_count = (eh_frame_end - eh_frame_start) / sizeof(struct table_entry);
   
   di->format = UNW_INFO_FORMAT_REMOTE_TABLE;
-  di->start_ip = (unw_word_t)values.addr;
-  di->end_ip = (unw_word_t)values.addr + values.size;
+  di->start_ip = (unw_word_t)values.value;
+  di->end_ip = (unw_word_t)values.value + values.size;
   
   di->u.rti.name_ptr = (unw_word_t)values.name;
   
