@@ -66,11 +66,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define Debug(level,format...)						\
 do {									\
     if (level < 0){									\
-      uprintf (">%s: ", __FUNCTION__);		\
-      uprintf (format);						\
+      kprintf (">%s: ", __FUNCTION__);		\
+      kprintf (format);						\
     }									\
 } while (0)
-# define Dprintf(format...) 	    printf (format)
+# define Dprintf(format...) 	    kprintf (format)
 # ifdef __GNUC__
 #  undef inline
 #  define inline	UNUSED
@@ -179,7 +179,7 @@ extern struct sx _U_dyn_info_list_lock;
 static ALWAYS_INLINE int
 print_error (const char *string)
 {
-  return uprintf ("%s\n", string);
+  return kprintf ("%s\n", string);
 }
 
 #define mi_init		UNWI_ARCH_OBJ(mi_init)

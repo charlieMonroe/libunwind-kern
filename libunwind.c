@@ -11,16 +11,16 @@ static void show_backtrace(void){
 	unw_word_t ip, sp, offset;
 
 	unw_getcontext(&uc);
-	uprintf("Got context\n");
+	kprintf("Got context\n");
 	unw_init_local(&cursor, &uc);
-	uprintf("Inited local\n");
+	kprintf("Inited local\n");
 	while (unw_step(&cursor) > 0) {
 		char fname[64];
 		unw_get_reg(&cursor, UNW_REG_IP, &ip);
 		unw_get_reg(&cursor, UNW_REG_SP, &sp);
 		fname[0] = '\0';
 		unw_get_proc_name(&cursor, fname, sizeof(fname), &offset);
-		uprintf("ip = %lx [%s+0x%lx], sp = %lx\n", (long)ip, fname, (long)offset, (long)sp);
+		kprintf("ip = %lx [%s+0x%lx], sp = %lx\n", (long)ip, fname, (long)offset, (long)sp);
 	}
 }
 
@@ -30,11 +30,11 @@ static int event_handler(struct module *module, int event, void *arg)
 	int e = 0;
 	switch (event) {
 	case MOD_LOAD:
-		uprintf("Libunwind loaded.\n");
+		kprintf("Libunwind loaded.\n");
 		show_backtrace();
 		break;
 	case MOD_UNLOAD:
-		uprintf("Libunwind unloaded.\n");
+		kprintf("Libunwind unloaded.\n");
 		break;
 	default:
 		e = EOPNOTSUPP;
