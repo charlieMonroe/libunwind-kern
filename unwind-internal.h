@@ -118,9 +118,10 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
 	    {
 	      if (reason == _URC_INSTALL_CONTEXT)
 		{
-		  /* we may regain control via _Unwind_Resume() */
+      /* we may regain control via _Unwind_Resume() */
+      Debug(-1, "Resuming!\n");
 		  unw_resume (&context->cursor);
-		  panic ("");
+		  panic ("Couldn't resume!'");
 		}
 	      else
 		return _URC_FATAL_PHASE2_ERROR;

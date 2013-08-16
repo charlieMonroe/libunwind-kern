@@ -77,11 +77,11 @@ establish_machine_state (struct cursor *c)
   access_reg = as->acc.access_reg;
   access_fpreg = as->acc.access_fpreg;
 
-  Debug (8, "copying out cursor state\n");
+  Debug (-1, "copying out cursor state\n");
 
   for (reg = 0; reg <= UNW_REG_LAST; ++reg)
     {
-      Debug (16, "copying %s %d\n", unw_regname (reg), reg);
+      Debug (-1, "copying %s %d\n", unw_regname (reg), reg);
       if (unw_is_fpreg (reg))
 	{
 	  if (tdep_access_fpreg (c, reg, &fpval, 0) >= 0)
@@ -102,7 +102,7 @@ unw_resume (unw_cursor_t *cursor)
   struct cursor *c = (struct cursor *) cursor;
   int ret;
 
-  Debug (1, "(cursor=%p)\n", c);
+  Debug (-1, "(cursor=%p)\n", c);
 
   if ((ret = establish_machine_state (c)) < 0)
     return ret;
