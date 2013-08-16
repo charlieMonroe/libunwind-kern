@@ -49,9 +49,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "libunwind.h"
 
 #ifdef DEBUG
-# define UNW_DEBUG	1
+# define UNW_DEBUG	0
 #else
-# define UNW_DEBUG	1
+# define UNW_DEBUG	0
 #endif
 
 #define assert(cond)			\
@@ -66,8 +66,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define Debug(level,format...)						\
 do {									\
     if (level < 0){									\
-      kprintf (">%s: ", __FUNCTION__);		\
-      kprintf (format);						\
+      printf (">%s: ", __FUNCTION__);		\
+      printf (format);						\
     }									\
 } while (0)
 # define Dprintf(format...) 	    kprintf (format)
@@ -179,7 +179,7 @@ extern struct sx _U_dyn_info_list_lock;
 static ALWAYS_INLINE int
 print_error (const char *string)
 {
-  return kprintf ("%s\n", string);
+  return printf ("%s\n", string);
 }
 
 #define mi_init		UNWI_ARCH_OBJ(mi_init)
