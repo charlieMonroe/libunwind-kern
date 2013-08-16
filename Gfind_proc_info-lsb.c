@@ -262,17 +262,12 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   eh_frame_end = (unw_word_t)((char*)section->addr + section->size);
   fde_count = (eh_frame_end - eh_frame_start) / sizeof(struct table_entry);
   
-  di->format = UNW_INFO_FORMAT_REMOTE_TABLE;
+  di->format = UNW_INFO_FORMAT_TABLE;
   di->start_ip = (unw_word_t)values.value;
   di->end_ip = (unw_word_t)values.value + values.size;
   
   di->u.rti.name_ptr = (unw_word_t)values.name;
   
-  found  = 1;
-  
-  /*
-  
-    
   cb_data->single_fde = 1;
   found = linear_search (unw_local_addr_space, ip,
                          eh_frame_start, eh_frame_end, fde_count,
@@ -281,7 +276,6 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
 	if (found != 1){
 		return 0;
 	}
-   */
 	
   return found;
 }
