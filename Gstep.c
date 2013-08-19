@@ -210,7 +210,7 @@ unw_step (unw_cursor_t *cursor)
       if (!DWARF_IS_NULL_LOC (c->dwarf.loc[RIP]))
 	{
 	  ret = dwarf_get (&c->dwarf, c->dwarf.loc[RIP], &c->dwarf.ip);
-	  Debug (1, "Frame Chain [RIP=0x%Lx] = 0x%Lx\n",
+	  Debug (1, "Frame Chain [RIP=0x%llx] = 0x%llx\n",
 		     (unsigned long long) DWARF_GET_LOC (c->dwarf.loc[RIP]),
 		     (unsigned long long) c->dwarf.ip);
 	  if (ret < 0)

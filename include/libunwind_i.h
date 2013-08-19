@@ -49,9 +49,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 #include "libunwind.h"
 
 #ifdef DEBUG
-# define UNW_DEBUG	0
+# define UNW_DEBUG	1
 #else
-# define UNW_DEBUG	0
+# define UNW_DEBUG	1
 #endif
 
 #define assert(cond)			\
@@ -65,7 +65,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 # define Debug(level,format...)						\
 do {									\
-    if (level < 20){									\
+    if (level < 8){									\
       printf (">%s: ", __FUNCTION__);		\
       printf (format);						\
     }									\
