@@ -185,9 +185,17 @@ dwarf_put (struct dwarf_cursor *c, dwarf_loc_t loc, unw_word_t val)
 #define tdep_get_elf_image		UNW_ARCH_OBJ(get_elf_image)
 #define tdep_access_reg			UNW_OBJ(access_reg)
 #define tdep_access_fpreg		UNW_OBJ(access_fpreg)
+
 # define tdep_fetch_frame		UNW_OBJ(fetch_frame)
 # define tdep_cache_frame		UNW_OBJ(cache_frame)
 # define tdep_reuse_frame		UNW_OBJ(reuse_frame)
+extern void tdep_fetch_frame (struct dwarf_cursor *c, unw_word_t ip,
+                              int need_unwind_info);
+extern void tdep_cache_frame (struct dwarf_cursor *c,
+                              struct dwarf_reg_state *rs);
+extern void tdep_reuse_frame (struct dwarf_cursor *c,
+                              struct dwarf_reg_state *rs);
+
 /*
 # define tdep_fetch_frame(c,ip,n)	do {} while(0)
 # define tdep_cache_frame(c,rs)		do {} while(0)
