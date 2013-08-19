@@ -65,12 +65,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 # define Debug(level,format...)						\
 do {									\
-    if (level < 0){									\
+    if (level < 20){									\
       printf (">%s: ", __FUNCTION__);		\
       printf (format);						\
     }									\
 } while (0)
-# define Dprintf(format...) 	    kprintf (format)
+# define Dprintf(format...) 	    printf (format)
 # ifdef __GNUC__
 #  undef inline
 #  define inline	UNUSED
@@ -137,6 +137,7 @@ static inline void mark_as_used(void *v UNUSED) {
 #endif
 #define GET_MEMORY(mem, size, type)				    		    \
 do {									    \
+  Debug(5, "Getting memory.\n");          \
   mem = malloc(size, type, M_WAITOK);					\
 } while (0)
 
@@ -179,7 +180,7 @@ extern struct sx _U_dyn_info_list_lock;
 static ALWAYS_INLINE int
 print_error (const char *string)
 {
-  return printf ("%s\n", string);
+  return printf ("ERROR: %s\n", string);
 }
 
 #define mi_init		UNWI_ARCH_OBJ(mi_init)
@@ -204,6 +205,7 @@ struct elf_dyn_info
 
 static inline void invalidate_edi (struct elf_dyn_info *edi)
 {
+  Debug(-1, "invalidating EDI\n");
 // TODO
 	/*if (edi->ei.image)
     munmap (edi->ei.image, edi->ei.size);*/
