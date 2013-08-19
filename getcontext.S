@@ -57,35 +57,6 @@ _Ux86_64_getcontext:
 	movq %rax, UC_MCONTEXT_GREGS_RAX(%rdi)
 	movq %rcx, UC_MCONTEXT_GREGS_RCX(%rdi)
 
-#if defined __linux__
-	/* Save fp state (not needed, except for setcontext not
-	   restoring garbage).  */
-	leaq UC_MCONTEXT_FPREGS_MEM(%rdi),%r8
-	movq %r8, UC_MCONTEXT_FPREGS_PTR(%rdi)
-	fnstenv (%r8)
-	stmxcsr FPREGS_OFFSET_MXCSR(%r8)
-#elif defined __FreeBSD__
-	/* Save rflags and segment registers, so that sigreturn(2)
-	does not complain. */
-	pushfq
-	.cfi_adjust_cfa_offset 8
-	popq UC_MCONTEXT_RFLAGS(%rdi)
-	.cfi_adjust_cfa_offset -8
-	movl $0, UC_MCONTEXT_FLAGS(%rdi)
-	movw %cs, UC_MCONTEXT_CS(%rdi)
-	movw %ss, UC_MCONTEXT_SS(%rdi)
-#if 0
-	/* Setting the flags to 0 above disables restore of segment
-	   registers from the context */
-	movw %ds, UC_MCONTEXT_DS(%rdi)
-	movw %es, UC_MCONTEXT_ES(%rdi)
-	movw %fs, UC_MCONTEXT_FS(%rdi)
-	movw %gs, UC_MCONTEXT_GS(%rdi)
-#endif
-	movq $UC_MCONTEXT_MC_LEN_VAL, UC_MCONTEXT_MC_LEN(%rdi)
-#else
-#error Port me
-#endif
 
 	leaq 8(%rsp), %rax /* exclude this call.  */
 	movq %rax, UC_MCONTEXT_GREGS_RSP(%rdi)

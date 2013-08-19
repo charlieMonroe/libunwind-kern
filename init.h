@@ -29,7 +29,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 /* Avoid a trip to x86_64_r_uc_addr() for purely local initialisation. */
 # define REG_INIT_LOC(c, rlc, ruc) \
-    DWARF_LOC ((unw_word_t) &c->uc->uc_mcontext.mc_ ## rlc, 0)
+    DWARF_REG_LOC (&c->dwarf, UNW_X86_64_ ## ruc)
+// ?
+//    DWARF_LOC ((unw_word_t) &c->uc->uc_mcontext.mc_ ## rlc, 0)
 
 static inline int
 common_init (struct cursor *c, unsigned use_prev_instr)
