@@ -45,26 +45,26 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 _Ux86_64_setcontext:
 
 	/* restore the rest of the state */
-	mov    UC_MCONTEXT_GREGS_R8(%rdi),%r8
-	mov    UC_MCONTEXT_GREGS_R9(%rdi),%r9
-	mov    UC_MCONTEXT_GREGS_RBX(%rdi),%rbx
-	mov    UC_MCONTEXT_GREGS_RBP(%rdi),%rbp
-	mov    UC_MCONTEXT_GREGS_R12(%rdi),%r12
-	mov    UC_MCONTEXT_GREGS_R13(%rdi),%r13
-	mov    UC_MCONTEXT_GREGS_R14(%rdi),%r14
-	mov    UC_MCONTEXT_GREGS_R15(%rdi),%r15
-	mov    UC_MCONTEXT_GREGS_RSI(%rdi),%rsi
-	mov    UC_MCONTEXT_GREGS_RDX(%rdi),%rdx
-	mov    UC_MCONTEXT_GREGS_RAX(%rdi),%rax
-	mov    UC_MCONTEXT_GREGS_RCX(%rdi),%rcx
-	mov    UC_MCONTEXT_GREGS_RSP(%rdi),%rsp
+	movq    UC_MCONTEXT_GREGS_R8(%rdi),%r8
+	movq    UC_MCONTEXT_GREGS_R9(%rdi),%r9
+	movq    UC_MCONTEXT_GREGS_RBX(%rdi),%rbx
+	movq    UC_MCONTEXT_GREGS_RBP(%rdi),%rbp
+	movq    UC_MCONTEXT_GREGS_R12(%rdi),%r12
+	movq    UC_MCONTEXT_GREGS_R13(%rdi),%r13
+	movq    UC_MCONTEXT_GREGS_R14(%rdi),%r14
+	movq    UC_MCONTEXT_GREGS_R15(%rdi),%r15
+	movq    UC_MCONTEXT_GREGS_RSI(%rdi),%rsi
+	movq    UC_MCONTEXT_GREGS_RDX(%rdi),%rdx
+	movq    UC_MCONTEXT_GREGS_RAX(%rdi),%rax
+	movq    UC_MCONTEXT_GREGS_RCX(%rdi),%rcx
+	movq    UC_MCONTEXT_GREGS_RSP(%rdi),%rsp
 
         /* push the return address on the stack */
-	mov    UC_MCONTEXT_GREGS_RIP(%rdi),%rcx
-	push   %rcx
+	movq    UC_MCONTEXT_GREGS_RIP(%rdi),%rcx
+	pushq   %rcx
 
-	mov    UC_MCONTEXT_GREGS_RCX(%rdi),%rcx
-	mov    UC_MCONTEXT_GREGS_RDI(%rdi),%rdi
+	movq    UC_MCONTEXT_GREGS_RCX(%rdi),%rcx
+	movq    UC_MCONTEXT_GREGS_RDI(%rdi),%rdi
 	retq
 
 	.size _Ux86_64_setcontext, . - _Ux86_64_setcontext
