@@ -191,7 +191,8 @@ unw_step (unw_cursor_t *cursor)
 		    unw_word_t prev_rbp;
 		    unw_get_reg((unw_cursor_t*)c, UNW_TDEP_BP, &prev_rbp);
 		    void **prev_rbp_ptr = (void**)prev_rbp;
-		    c->dwarf.cfa += ((unw_word_t)(*prev_rbp_ptr) - prev_rbp);
+		    unw_word_t delta = ((unw_word_t)(*prev_rbp_ptr) - prev_rbp);
+		    c->dwarf.cfa += delta;
 		    
 		    unw_word_t sp;
 		    long offset;
@@ -199,7 +200,7 @@ unw_step (unw_cursor_t *cursor)
 		    unw_get_reg((unw_cursor_t*)c, UNW_REG_SP, &sp);
 		    fname[0] = '\0';
 		    unw_get_proc_name((unw_cursor_t*)c, fname, sizeof(fname), &offset);
-		    printf("%s -> sp = %p, dwarf.cfa = %p\n", fname, (void*)sp, (void*)c->dwarf.cfa);
+		    printf("%s -> sp = %p, dwarf.cfa = %p, delta = %p\n", fname, (void*)sp, (void*)c->dwarf.cfa, (void*)delta);
 	    }
 
 	  /* Mark all registers unsaved */
