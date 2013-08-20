@@ -194,8 +194,8 @@ unw_step (unw_cursor_t *cursor)
 		    char fname[64];
 		    unw_get_reg(c, UNW_REG_SP, &sp);
 		    fname[0] = '\0';
-		    unw_get_proc_name(&context->cursor, fname, sizeof(fname), &offset);
-		    printf("%s -> sp = %p, dwarf.cfa = %p\n", fname, (void*)sp, (void*)dwarf.cfa);
+		    unw_get_proc_name(c, fname, sizeof(fname), &offset);
+		    printf("%s -> sp = %p, dwarf.cfa = %p\n", fname, (void*)sp, (void*)c->dwarf.cfa);
 	    }
 
 	  /* Mark all registers unsaved */
