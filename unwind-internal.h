@@ -133,6 +133,13 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
         {
           /* we may regain control via _Unwind_Resume() */
           Debug(-1, "Resuming!\n");
+		
+		void *rbp = NULL;
+		void *rsp = NULL;
+		__asm__("\t movq %%rbp, %0" : "=r"(rbp));
+		__asm__("\t movq %%rsp, %0" : "=r"(rsp));
+		printf(">>>>>%s - rbp: %p rsp: %p\n", __FUNCTION__, rbp, rsp);
+		
           unw_resume (&context->cursor);
           panic ("Couldn't resume!'");
         }
