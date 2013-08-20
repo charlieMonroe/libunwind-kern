@@ -122,6 +122,8 @@ linear_search (unw_addr_space_t as, unw_word_t ip,
   unw_word_t i = 0, fde_addr, addr = eh_frame_start;
   int ret;
   
+	Debug(-1, "fde_count = %i, start %p, end %p\n", (int)fde_count, (void*)eh_frame_start, (void*)eh_frame_end);
+	
   while (i++ < fde_count && addr < eh_frame_end)
   {
     fde_addr = addr;
@@ -288,7 +290,7 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
   intrmask_t saved_mask;
   int ret = 0;
   
-  Debug (-1, "===========looking for IP=0x%li===========\n", (long) ip);
+  Debug (-1, "===========looking for IP=0x%lx===========\n", (long) ip);
   
   memset (&cb_data, 0, sizeof (cb_data));
   cb_data.ip = ip;
