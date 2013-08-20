@@ -849,6 +849,10 @@ uncached_dwarf_find_save_locs (struct dwarf_cursor *c)
 HIDDEN int
 dwarf_find_save_locs (struct dwarf_cursor *c)
 {
+	
+	return uncached_dwarf_find_save_locs (c);
+	
+	
   dwarf_state_record_t sr;
   dwarf_reg_state_t *rs, rs_copy;
   struct dwarf_rs_cache *cache;
