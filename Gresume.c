@@ -89,7 +89,7 @@ establish_machine_state (struct cursor *c)
       else
 	{
 	  if (tdep_access_reg (c, reg, &val, 0) >= 0)
-		  Debug (-1, "copying %s %d = %p\n", unw_regname (reg), reg, (void*)val);
+		  Debug (-1, "copying %s[%d] = %p\n", unw_regname (reg), reg, (void*)val);
 	    (*access_reg) (as, reg, &val, 1, arg);
 	}
     }
