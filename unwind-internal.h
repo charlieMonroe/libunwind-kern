@@ -73,6 +73,13 @@ _Unwind_Phase2 (struct _Unwind_Exception *exception_object,
   
   while (1)
   {
+    unw_word_t sp;
+    char fname[64];
+		unw_get_reg(&context->cursor, UNW_REG_SP, &sp);
+		fname[0] = '\0';
+		unw_get_proc_name(&cursor, fname, sizeof(fname), &offset);
+		printf("%s -> sp = %p\n", fname, (void*)sp);
+    
     ret = unw_step (&context->cursor);
     if (ret <= 0)
     {

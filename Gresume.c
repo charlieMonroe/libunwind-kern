@@ -81,7 +81,6 @@ establish_machine_state (struct cursor *c)
 
   for (reg = 0; reg <= UNW_REG_LAST; ++reg)
     {
-      Debug (-1, "copying %s %d\n", unw_regname (reg), reg);
       if (unw_is_fpreg (reg))
 	{
 	  if (tdep_access_fpreg (c, reg, &fpval, 0) >= 0)
@@ -90,6 +89,7 @@ establish_machine_state (struct cursor *c)
       else
 	{
 	  if (tdep_access_reg (c, reg, &val, 0) >= 0)
+		  Debug (-1, "copying %s %d = %p\n", unw_regname (reg), reg, (void*)val);
 	    (*access_reg) (as, reg, &val, 1, arg);
 	}
     }
