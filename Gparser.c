@@ -673,15 +673,17 @@ create_state_record_for (struct dwarf_cursor *c, dwarf_state_record_t *sr,
     {
     case UNW_INFO_FORMAT_TABLE:
     case UNW_INFO_FORMAT_REMOTE_TABLE:
+		    Debug(-1, "format table\n");
       ret = parse_fde (c, ip, sr);
       break;
 
     case UNW_INFO_FORMAT_DYNAMIC:
+		    Debug(-1, "dynamic\n");
       ret = parse_dynamic (c, ip, sr);
       break;
 
     default:
-      Debug (1, "Unexpected unwind-info format %d\n", c->pi.format);
+      Debug (-1, "Unexpected unwind-info format %d\n", c->pi.format);
       ret = -UNW_EINVAL;
     }
   return ret;
@@ -826,17 +828,17 @@ uncached_dwarf_find_save_locs (struct dwarf_cursor *c)
   int ret;
 
 	if ((ret = fetch_proc_info (c, c->ip, 1)) < 0){
-		Debug(-1, "Failed in fetch proc info.\n");
+		Debug(-1, "Failed in fetch proc info (%i).\n", ret);
 	    return ret;
 	}
 
 	if ((ret = create_state_record_for (c, &sr, c->ip)) < 0){
-		Debug(-1, "Failed in create state record.\n");
+		Debug(-1, "Failed in create state record (%i).\n", ret);
 	    return ret;
 	}
 
 	if ((ret = apply_reg_state (c, &sr.rs_current)) < 0){
-		Debug(-1, "Failed in apply reg state.\n");
+		Debug(-1, "Failed in apply reg state (%i).\n", ret);
 	    return ret;
 	}
 
