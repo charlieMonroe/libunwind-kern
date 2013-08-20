@@ -288,7 +288,7 @@ dwarf_find_proc_info (unw_addr_space_t as, unw_word_t ip,
   intrmask_t saved_mask;
   int ret = 0;
   
-  Debug (-1, "===========looking for IP=0x%l===========\n", (long) ip);
+  Debug (-1, "===========looking for IP=0x%li===========\n", (long) ip);
   
   memset (&cb_data, 0, sizeof (cb_data));
   cb_data.ip = ip;
