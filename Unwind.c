@@ -247,6 +247,12 @@ _Unwind_RaiseException (struct _Unwind_Exception *exception_object)
   unw_word_t ip;
   int ret;
   
+  void *rbp = NULL;
+	void *rsp = NULL;
+	__asm__("\t movq %%rbp, %0" : "=r"(rbp));
+	__asm__("\t movq %%rsp, %0" : "=r"(rsp));
+  Debug (-1, "rsp %p rbp %p\n", rsp, rbp);
+  
   Debug (1, "(exception_object=%p)\n", exception_object);
   
   if (_Unwind_InitContext (&context, &uc) < 0)

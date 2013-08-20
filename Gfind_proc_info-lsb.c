@@ -229,7 +229,7 @@ dwarf_callback (linker_file_t file, struct dwarf_callback_data *cb_data)
   if (ip < (unw_word_t)file->address ||
       ip > (unw_word_t)(file->address + file->size)) {
     /* Try the next file */
-    Debug(-1, "The function definitely isn't in file %s\n", file->filename);
+    // Debug(-1, "The function definitely isn't in file %s\n", file->filename);
     return 0;
   }
   
