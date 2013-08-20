@@ -65,7 +65,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 
 # define Debug(level,format...)						\
 do {									\
-    if (level < 0){									\
+    if (level < 16){									\
       printf (">%s: ", __FUNCTION__);		\
       printf (format);						\
     }									\

@@ -448,16 +448,6 @@ fetch_proc_info (struct dwarf_cursor *c, unw_word_t ip, int need_unwind_info)
   return ret;
 }
 
-static int
-parse_dynamic (struct dwarf_cursor *c, unw_word_t ip, dwarf_state_record_t *sr)
-{
-  Debug (1, "Not yet implemented\n");
-#if 0
-  /* Don't forget to set the ret_addr_column!  */
-  c->ret_addr_column = XXX;
-#endif
-  return -UNW_ENOINFO;
-}
 
 static inline void
 put_unwind_info (struct dwarf_cursor *c, unw_proc_info_t *pi)
@@ -674,12 +664,7 @@ create_state_record_for (struct dwarf_cursor *c, dwarf_state_record_t *sr,
     case UNW_INFO_FORMAT_TABLE:
     case UNW_INFO_FORMAT_REMOTE_TABLE:
 		    Debug(-1, "format table\n");
-      ret = parse_fde (c, ip, sr);
-      break;
-
-    case UNW_INFO_FORMAT_DYNAMIC:
-		    Debug(-1, "dynamic\n");
-      ret = parse_dynamic (c, ip, sr);
+		    ret = parse_fde (c, ip, sr);
       break;
 
     default:
