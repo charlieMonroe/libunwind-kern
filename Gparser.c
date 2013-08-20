@@ -825,14 +825,20 @@ uncached_dwarf_find_save_locs (struct dwarf_cursor *c)
   dwarf_state_record_t sr;
   int ret;
 
-  if ((ret = fetch_proc_info (c, c->ip, 1)) < 0)
-    return ret;
+	if ((ret = fetch_proc_info (c, c->ip, 1)) < 0){
+		Debug(-1, "Failed in fetch proc info.\n");
+	    return ret;
+	}
 
-  if ((ret = create_state_record_for (c, &sr, c->ip)) < 0)
-    return ret;
+	if ((ret = create_state_record_for (c, &sr, c->ip)) < 0){
+		Debug(-1, "Failed in create state record.\n");
+	    return ret;
+	}
 
-  if ((ret = apply_reg_state (c, &sr.rs_current)) < 0)
-    return ret;
+	if ((ret = apply_reg_state (c, &sr.rs_current)) < 0){
+		Debug(-1, "Failed in apply reg state.\n");
+	    return ret;
+	}
 
   put_unwind_info (c, &c->pi);
   return 0;
