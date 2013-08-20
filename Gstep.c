@@ -192,7 +192,7 @@ unw_step (unw_cursor_t *cursor)
 		    unw_get_reg((unw_cursor_t*)c, UNW_TDEP_BP, &prev_rbp);
 		    void **prev_rbp_ptr = (void**)prev_rbp;
 		    unw_word_t delta = ((unw_word_t)(*prev_rbp_ptr) - prev_rbp);
-		    c->dwarf.cfa += delta;
+		    c->dwarf.cfa -= delta;
 		    
 		    unw_word_t sp;
 		    long offset;
