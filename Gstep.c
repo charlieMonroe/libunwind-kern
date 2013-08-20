@@ -188,6 +188,14 @@ unw_step (unw_cursor_t *cursor)
               c->frame_info.cfa_reg_offset = 16;
               c->frame_info.rbp_cfa_offset = -16;
 	      c->dwarf.cfa += 16;
+		    
+		    unw_word_t sp;
+		    long offset;
+		    char fname[64];
+		    unw_get_reg(c, UNW_REG_SP, &sp);
+		    fname[0] = '\0';
+		    unw_get_proc_name(&context->cursor, fname, sizeof(fname), &offset);
+		    printf("%s -> sp = %p, dwarf.cfa = %p\n", fname, (void*)sp, (void*)dwarf.cfa);
 	    }
 
 	  /* Mark all registers unsaved */
