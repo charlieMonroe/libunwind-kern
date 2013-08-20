@@ -129,7 +129,7 @@ linear_search (unw_addr_space_t as, unw_word_t ip,
     fde_addr = addr;
     if ((ret = dwarf_extract_proc_info_from_fde (as, a, &addr, pi, 0, 0, arg))
         < 0)
-      return ret;
+      continue;
     
     if (ip >= pi->start_ip && ip < pi->end_ip)
     {
