@@ -185,9 +185,11 @@ unw_step (unw_cursor_t *cursor)
 
               c->frame_info.frame_type = UNW_X86_64_FRAME_GUESSED;
               c->frame_info.cfa_reg_rsp = 0;
-              c->frame_info.cfa_reg_offset = 16;
-              c->frame_info.rbp_cfa_offset = -16;
-	      c->dwarf.cfa += 16;
+              c->frame_info.cfa_reg_offset = 0;
+              c->frame_info.rbp_cfa_offset = 0;
+		    
+		    void **prev_rbp_ptr = (void**)prev_cfa;
+	      c->dwarf.cfa += ((unw_word_t)(*prev_rbp_ptr) - prev_cfa);
 		    
 		    unw_word_t sp;
 		    long offset;
