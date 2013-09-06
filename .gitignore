@@ -20,3 +20,10 @@
 .DS_Store
 
 libunwind.ko
+
+@
+export_syms
+machine
+x86
+
+*.tmp
